@@ -15,17 +15,11 @@ const App: FC = () => {
 
     return (
         <>
-            <div className='d-flex flex-column h-100 w-100'>
-                <div className='sticky-top'>
-                    <div>
-                        <Header/>
-                    </div>
-                </div>
-                <div className='d-flex flex-grow-1' >
-                    <div>
-                        <SideBar/>
-                    </div>
-                    <div className='flex-grow-1'>
+            <div className='h-100 w-100'>
+                <Header />
+                <div className='d-flex w-100 h-100'>
+                    <SideBar />
+                    <div className='content'>
                         <RouterProvider router={routes} />
                     </div>
                 </div>

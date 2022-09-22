@@ -4,6 +4,7 @@ import Root from './tssrc/pages/Root'
 import NotFound from './tssrc/pages/NotFound'
 import Projects from './tssrc/pages/Projects'
 import Clients from './tssrc/pages/Clients'
+import Profile from './tssrc/pages/Profile'
 import { RouteObject } from 'react-router-dom';
 
 export const headerRoutes: Array<RouteObject> = [
@@ -19,5 +20,9 @@ export const headerRoutes: Array<RouteObject> = [
     {
         path: "/clients",
         element: <Clients />
+    },
+    {
+        path: "/profile",
+        element: <Profile />
     }
 ]

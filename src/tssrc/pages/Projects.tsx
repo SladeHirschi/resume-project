@@ -79,14 +79,13 @@ const Projects: FC = () => {
                 {projects.map((project, index) => {
                     return (
                         <div key={index} className='col-md-3'>
-                            <div className="card card-box-shadow">
+                            <a className="card card-box-shadow no-styles" href={project.link} target="_blank">
                                 <img className="card-img-top border" src={require('../../assets/actionpy.png')} alt="Project Image" />
-                                    <div className="card-body">
-                                        <h5 className="card-title">{project.name}</h5>
-                                        <p className="card-text">{project.description}</p>
-                                        <a href={project.link} className="btn btn-primary">GitHub Project</a>
-                                    </div>
-                            </div>
+                                <div className="card-body">
+                                    <h5 className="card-title">{project.name}</h5>
+                                    <p className="card-text">{project.description}</p>
+                                </div>
+                            </a>
                         </div>
                     );
                 })}
