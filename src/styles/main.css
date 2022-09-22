@@ -1,0 +1,53 @@
+/********** Root Vars ***************/
+:root {
+    --primary-color: #f0f0f0;
+    --header-color: #22333b;
+    --sidebar-color: #f7f3f3;
+    --dark-color: #0d1b2a;
+    --dark-blue-color: #1b263b;
+    --gray-color: #415a77;
+    --light-gray-color: #778da9;
+}
+/********** Main Styles ***************/
+#root {
+    height: 100vh;
+    width: 100vw;
+}
+body {
+    margin: 0px;
+}
+.header {
+    background-color: var(--header-color);
+    padding: 0.5rem;
+}
+.side-bar {
+    height: 100%;
+    overflow-x: hidden;
+    background-color: var(--sidebar-color);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px;
+}
+.side-bar-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    font-size: 2rem;
+    padding: 0.25rem 0.5rem;
+    transition: all .2s ease-in-out;
+}
+.side-bar-item:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/***************************************/
+/********** Pages Styles ***************/
+
+
+/********** Projects ***************/
+
+.projects-container {
+    padding: 1.5rem;
+}
+.card-box-shadow {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
