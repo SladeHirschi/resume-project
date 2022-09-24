@@ -24,6 +24,24 @@ const Profile: FC = () => {
             type: 'work',
             current: true
         },
+        {
+            name: 'Software Developer',
+            company: 'Easier Accounting',
+            description: 'Worked on CRM to provide good sotware for staff by adding, maintaining, and fixing features.',
+            dateStarted: '2021-05-25',
+            dateEnded: null,
+            type: 'work',
+            current: true
+        },
+        {
+            name: 'Software Developer',
+            company: 'Easier Accounting',
+            description: 'Worked on CRM to provide good sotware for staff by adding, maintaining, and fixing features.',
+            dateStarted: '2021-05-25',
+            dateEnded: null,
+            type: 'work',
+            current: true
+        },
     ];
 
     useEffect(() => {
@@ -35,15 +53,15 @@ const Profile: FC = () => {
             <div className='row h-100'>
                 <div className='col-md-4 p-4'>
                     <div className='profile-image-container'>
-                        <img src={require('../../assets/logo.png')} width='100%' height='100%' />
+                        <img src={require('../../assets/logo.png')} width='212px' height='212px' alt="Me" />
                     </div>
 
                     <div className='profile-work-container'>
                         <div className="separator">Work</div>
 
-                        {workData.map(data => {
+                        {workData.map((data, index) => {
                             return (
-                                <div className='work-data-card'>
+                                <div key={index} className='work-data-card'>
                                     <div className='work-data-card-title'>
                                         <div>{data.name}</div>
                                         {data.current && <span className="work-data-card-title-current">Current</span>}
@@ -51,7 +69,7 @@ const Profile: FC = () => {
 
                                     <div className='work-data-card-subtitle'>{data.company}</div>
 
-                                    <div className='wwork-data-card-body'>{data.description}</div>
+                                    <div className='work-data-card-body'>{data.description}</div>
                                 </div>
                             );
                         })}
