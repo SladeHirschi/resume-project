@@ -15,7 +15,7 @@ const EmailModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: EmailModa
     return (
         <Modal show={show} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Info</Modal.Title>
+                <Modal.Title>Send Email</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className='mb-3'>

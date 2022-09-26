@@ -108,7 +108,7 @@ const Profile: FC = () => {
     }
 
     async function onSubmitEmailModal() {
-        var body = 'message=' + encodeURIComponent(emailDraft.body);
+        var body = 'body=' + encodeURIComponent(emailDraft.body);
         body += '&sender=' + encodeURIComponent(emailDraft.sender);
         const rawResponse = await fetch('http://localhost:8080/sendEmail', {
             method: 'POST',
@@ -181,7 +181,10 @@ const Profile: FC = () => {
                                     </button>
                                 </div>
                                 <div className='col-xl-4'>
-                                    <button className='btn btn-secondary d-flex align-items-center w-100 fit-content-desktop'>
+                                    <button
+                                        className='btn btn-secondary d-flex align-items-center w-100 fit-content-desktop'
+                                        onClick={() => setShowEmailModal(true)}
+                                    >
                                         <MdOutlineEmail />
                                         <span style={{ fontSize: '0.85rem' }} className='ms-2'>Send Email</span>
                                     </button>
