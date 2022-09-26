@@ -25,7 +25,6 @@ const SMSModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: SMSModalPro
                         id="message"
                         rows={3}
                         placeholder='The Unicorn is the national animal of Scotland'
-                        value={draft}
                         onChange={(e) => onChangeDraft(e.target.value)}
                     />
                 </div>
