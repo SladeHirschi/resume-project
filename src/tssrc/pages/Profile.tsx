@@ -6,6 +6,7 @@ import { TbBrandGithub } from 'react-icons/tb';
 import { WorkDataType, EmptyWorkData } from "../helpers/types/workDataType";
 import WorkDataModal from "../components/modals/WorkDataModal";
 import InfoModal from "../components/modals/InfoModal";
+import SMSModal from "../components/modals/SMSModal";
 
 type Info = {
     label: string
@@ -20,9 +21,11 @@ const Profile: FC = () => {
     const [contactInfo, setContactInfo] = useState<Array<Info>>([]);
 
     const [workDataDraft, setWorkDataDraft] = useState<WorkDataType>(EmptyWorkData);
+    const [SMSMessage, setSMSMessage] = useState<string>('');
     const [basicInfoDraft, setBasicInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
     const [contactInfoDraft, setContactInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
 
+    const [showSMSModal, setShowSMSModal] = useState<boolean>(false);
     const [showWorkDataModal, setShowWorkDataModal] = useState<boolean>(false);
     const [showBasicInfoModal, setShowBasicInfoModal] = useState<boolean>(false);
     const [showContactInfoModal, setShowContactInfoModal] = useState<boolean>(false);
@@ -88,6 +91,18 @@ const Profile: FC = () => {
         setShowBasicInfoModal(false);
     }
 
+    async function onSubmitSMSModal() {
+        var body = 'message=' + encodeURIComponent(SMSMessage);
+        const rawResponse = await fetch('http://localhost:8080/sendSMS', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        });
+        console.log("rawResponse: ", rawResponse)
+    }
+
     return (
         <div className='profile-page-container'>
             <div className='row h-100'>
@@ -139,7 +154,10 @@ const Profile: FC = () => {
 
                             <div className='row gx-3 gy-1 col-md-6 mb-5'>
                                 <div className='col-xl-4'>
-                                    <button className='btn btn-primary d-flex align-items-center w-100 fit-content-desktop'>
+                                    <button 
+                                        className='btn btn-primary d-flex align-items-center w-100 fit-content-desktop'
+                                        onClick={() => setShowSMSModal(true)}
+                                    >
                                         <MdTextsms />
                                         <span style={{ fontSize: '0.85rem' }} className='ms-2'>Send Text</span>
                                     </button>
@@ -246,6 +264,13 @@ const Profile: FC = () => {
                 onClose={() => setShowBasicInfoModal(false)}
                 show={showBasicInfoModal}
                 onSubmit={onSubmitBasicInfoModal}
+            />
+            <SMSModal
+                draft={SMSMessage}
+                onChangeDraft={setSMSMessage}
+                onClose={() => setShowSMSModal(false)}
+                show={showSMSModal}
+                onSubmit={onSubmitSMSModal}
             />
 
         </div>
