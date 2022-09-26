@@ -96,29 +96,37 @@ const Profile: FC = () => {
 
     async function onSubmitSMSModal() {
         var body = 'message=' + encodeURIComponent(SMSMessage);
-        const rawResponse = await fetch('http://localhost:8080/sendSMS', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: body
-        });
-        console.log("rawResponse: ", rawResponse);
-        setShowSMSModal(false);
+        try {
+            const response = await fetch('http://localhost:8080/sendSMS', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: body
+            });
+            setShowSMSModal(false);
+        } catch(e) {
+            alert(e);
+        }
     }
 
     async function onSubmitEmailModal() {
         var body = 'body=' + encodeURIComponent(emailDraft.body);
         body += '&sender=' + encodeURIComponent(emailDraft.sender);
-        const rawResponse = await fetch('http://localhost:8080/sendEmail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: body
-        });
-        console.log("rawResponse: ", rawResponse);
-        setShowEmailModal(false);
+        try {
+            const response: any = await fetch('http://localhost:8080/sendEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: body
+            });
+            var data = await response.json()
+            console.log("response: ", data);
+            setShowEmailModal(false);
+        } catch(e) {
+            alert(e);
+        }
     }
 
     return (
@@ -190,10 +198,15 @@ const Profile: FC = () => {
                                     </button>
                                 </div>
                                 <div className='col-xl-4'>
-                                    <button className='btn btn-dark d-flex align-items-center w-100 fit-content-desktop'>
+                                    <a 
+                                        className='btn btn-dark d-flex align-items-center w-100 fit-content-desktop'
+                                        href="https://github.com/SladeHirschi"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
                                         <TbBrandGithub />
                                         <span style={{ fontSize: '0.85rem' }} className='ms-2'>View GitHub</span>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
