@@ -32,7 +32,7 @@ const InfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: ContactInf
                         <input
                             className="form-control"
                             id="label"
-                            placeholder='Phone'
+                            placeholder='Name'
                             onChange={(e) => onChangeDraft({ ...draft, label: e.target.value })}
                             autoFocus
                         />
@@ -42,7 +42,7 @@ const InfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: ContactInf
                         <input
                             className="form-control"
                             id="value"
-                            placeholder='(123) 456-7890'
+                            placeholder='Linus Torvalds'
                             onChange={(e) => onChangeDraft({ ...draft, value: e.target.value })}
                         />
                     </div>
