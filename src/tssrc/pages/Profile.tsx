@@ -7,6 +7,7 @@ import { WorkDataType, EmptyWorkData } from "../helpers/types/workDataType";
 import WorkDataModal from "../components/modals/WorkDataModal";
 import InfoModal from "../components/modals/InfoModal";
 import SMSModal from "../components/modals/SMSModal";
+import EmailModal from "../components/modals/EmailModal";
 
 type Info = {
     label: string
@@ -20,12 +21,14 @@ const Profile: FC = () => {
     const [basicInfo, setBasicInfo] = useState<Array<Info>>([]);
     const [contactInfo, setContactInfo] = useState<Array<Info>>([]);
 
-    const [workDataDraft, setWorkDataDraft] = useState<WorkDataType>(EmptyWorkData);
     const [SMSMessage, setSMSMessage] = useState<string>('');
+    const [emailDraft, setEmailDraft] = useState<{ body: string, sender: string }>({ body: '', sender: '' });
+    const [workDataDraft, setWorkDataDraft] = useState<WorkDataType>(EmptyWorkData);
     const [basicInfoDraft, setBasicInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
     const [contactInfoDraft, setContactInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
 
     const [showSMSModal, setShowSMSModal] = useState<boolean>(false);
+    const [showEmailModal, setShowEmailModal] = useState<boolean>(false);
     const [showWorkDataModal, setShowWorkDataModal] = useState<boolean>(false);
     const [showBasicInfoModal, setShowBasicInfoModal] = useState<boolean>(false);
     const [showContactInfoModal, setShowContactInfoModal] = useState<boolean>(false);
@@ -100,7 +103,22 @@ const Profile: FC = () => {
             },
             body: body
         });
-        console.log("rawResponse: ", rawResponse)
+        console.log("rawResponse: ", rawResponse);
+        setShowSMSModal(false);
+    }
+
+    async function onSubmitEmailModal() {
+        var body = 'message=' + encodeURIComponent(emailDraft.body);
+        body += '&sender=' + encodeURIComponent(emailDraft.sender);
+        const rawResponse = await fetch('http://localhost:8080/sendEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        });
+        console.log("rawResponse: ", rawResponse);
+        setShowEmailModal(false);
     }
 
     return (
@@ -154,7 +172,7 @@ const Profile: FC = () => {
 
                             <div className='row gx-3 gy-1 col-md-6 mb-5'>
                                 <div className='col-xl-4'>
-                                    <button 
+                                    <button
                                         className='btn btn-primary d-flex align-items-center w-100 fit-content-desktop'
                                         onClick={() => setShowSMSModal(true)}
                                     >
@@ -265,12 +283,21 @@ const Profile: FC = () => {
                 show={showBasicInfoModal}
                 onSubmit={onSubmitBasicInfoModal}
             />
+
             <SMSModal
                 draft={SMSMessage}
                 onChangeDraft={setSMSMessage}
                 onClose={() => setShowSMSModal(false)}
                 show={showSMSModal}
                 onSubmit={onSubmitSMSModal}
+            />
+
+            <EmailModal
+                draft={emailDraft}
+                onChangeDraft={setEmailDraft}
+                onClose={() => setShowEmailModal(false)}
+                show={showEmailModal}
+                onSubmit={onSubmitEmailModal}
             />
 
         </div>
