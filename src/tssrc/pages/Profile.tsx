@@ -7,6 +7,7 @@ import { WorkDataType, EmptyWorkData } from "../helpers/types/workDataType";
 import WorkDataModal from "../components/modals/WorkDataModal";
 import InfoModal from "../components/modals/InfoModal";
 import SMSModal from "../components/modals/SMSModal";
+import EmailModal from "../components/modals/EmailModal";
 
 type Info = {
     label: string
@@ -20,12 +21,14 @@ const Profile: FC = () => {
     const [basicInfo, setBasicInfo] = useState<Array<Info>>([]);
     const [contactInfo, setContactInfo] = useState<Array<Info>>([]);
 
-    const [workDataDraft, setWorkDataDraft] = useState<WorkDataType>(EmptyWorkData);
     const [SMSMessage, setSMSMessage] = useState<string>('');
+    const [emailDraft, setEmailDraft] = useState<{ body: string, sender: string }>({ body: '', sender: '' });
+    const [workDataDraft, setWorkDataDraft] = useState<WorkDataType>(EmptyWorkData);
     const [basicInfoDraft, setBasicInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
     const [contactInfoDraft, setContactInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
 
     const [showSMSModal, setShowSMSModal] = useState<boolean>(false);
+    const [showEmailModal, setShowEmailModal] = useState<boolean>(false);
     const [showWorkDataModal, setShowWorkDataModal] = useState<boolean>(false);
     const [showBasicInfoModal, setShowBasicInfoModal] = useState<boolean>(false);
     const [showContactInfoModal, setShowContactInfoModal] = useState<boolean>(false);
@@ -93,14 +96,37 @@ const Profile: FC = () => {
 
     async function onSubmitSMSModal() {
         var body = 'message=' + encodeURIComponent(SMSMessage);
-        const rawResponse = await fetch('http://localhost:8080/sendSMS', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: body
-        });
-        console.log("rawResponse: ", rawResponse)
+        try {
+            const response = await fetch('http://localhost:8080/sendSMS', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: body
+            });
+            setShowSMSModal(false);
+        } catch(e) {
+            alert(e);
+        }
+    }
+
+    async function onSubmitEmailModal() {
+        var body = 'body=' + encodeURIComponent(emailDraft.body);
+        body += '&sender=' + encodeURIComponent(emailDraft.sender);
+        try {
+            const response: any = await fetch('http://localhost:8080/sendEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: body
+            });
+            var data = await response.json()
+            console.log("response: ", data);
+            setShowEmailModal(false);
+        } catch(e) {
+            alert(e);
+        }
     }
 
     return (
@@ -154,7 +180,7 @@ const Profile: FC = () => {
 
                             <div className='row gx-3 gy-1 col-md-6 mb-5'>
                                 <div className='col-xl-4'>
-                                    <button 
+                                    <button
                                         className='btn btn-primary d-flex align-items-center w-100 fit-content-desktop'
                                         onClick={() => setShowSMSModal(true)}
                                     >
@@ -163,16 +189,24 @@ const Profile: FC = () => {
                                     </button>
                                 </div>
                                 <div className='col-xl-4'>
-                                    <button className='btn btn-secondary d-flex align-items-center w-100 fit-content-desktop'>
+                                    <button
+                                        className='btn btn-secondary d-flex align-items-center w-100 fit-content-desktop'
+                                        onClick={() => setShowEmailModal(true)}
+                                    >
                                         <MdOutlineEmail />
                                         <span style={{ fontSize: '0.85rem' }} className='ms-2'>Send Email</span>
                                     </button>
                                 </div>
                                 <div className='col-xl-4'>
-                                    <button className='btn btn-dark d-flex align-items-center w-100 fit-content-desktop'>
+                                    <a 
+                                        className='btn btn-dark d-flex align-items-center w-100 fit-content-desktop'
+                                        href="https://github.com/SladeHirschi"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
                                         <TbBrandGithub />
                                         <span style={{ fontSize: '0.85rem' }} className='ms-2'>View GitHub</span>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -265,12 +299,21 @@ const Profile: FC = () => {
                 show={showBasicInfoModal}
                 onSubmit={onSubmitBasicInfoModal}
             />
+
             <SMSModal
                 draft={SMSMessage}
                 onChangeDraft={setSMSMessage}
                 onClose={() => setShowSMSModal(false)}
                 show={showSMSModal}
                 onSubmit={onSubmitSMSModal}
+            />
+
+            <EmailModal
+                draft={emailDraft}
+                onChangeDraft={setEmailDraft}
+                onClose={() => setShowEmailModal(false)}
+                show={showEmailModal}
+                onSubmit={onSubmitEmailModal}
             />
 
         </div>

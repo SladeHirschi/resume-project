@@ -15,7 +15,7 @@ const SMSModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: SMSModalPro
     return (
         <Modal show={show} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Info</Modal.Title>
+                <Modal.Title>Send Text</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className='mb-3'>
@@ -25,7 +25,6 @@ const SMSModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: SMSModalPro
                         id="message"
                         rows={3}
                         placeholder='The Unicorn is the national animal of Scotland'
-                        value={draft}
                         onChange={(e) => onChangeDraft(e.target.value)}
                     />
                 </div>
