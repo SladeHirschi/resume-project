@@ -177,11 +177,13 @@ const Profile: FC = () => {
                                     return (
                                         <div key={index} className={'d-flex justify-content-between col-md-6'}>
                                             <span className='col-md-4'>{item.label}</span>
-                                            {item.link.length > 0 ?
-                                                <a href={item.link} target="_blank" rel="noreferrer">{item.value}</a>
-                                                :
-                                                item.value
-                                            }
+                                            <span className='col-md-8'>
+                                                {item.link.length > 0 ?
+                                                    <a href={item.link} target="_blank" rel="noreferrer">{item.value}</a>
+                                                    :
+                                                    item.value
+                                                }
+                                            </span>
                                         </div>
                                     );
                                 })}
@@ -192,7 +194,7 @@ const Profile: FC = () => {
                             <div className="separator">Basic Info</div>
 
                             <div className='d-flex justify-content-end'>
-                                <button 
+                                <button
                                     className='btn btn-primary d-flex align-items-center justify-content-between mb-2'
                                     onClick={() => setShowBasicInfoModal(true)}
                                 >
