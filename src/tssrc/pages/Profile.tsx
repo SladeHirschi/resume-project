@@ -5,7 +5,7 @@ import { TbBrandGithub } from 'react-icons/tb';
 
 import { WorkDataType, EmptyWorkData } from "../helpers/types/workDataType";
 import WorkDataModal from "../components/modals/WorkDataModal";
-import ContactInfoModal from "../components/modals/ContactInfoModal";
+import InfoModal from "../components/modals/InfoModal";
 
 type Info = {
     label: string
@@ -20,9 +20,11 @@ const Profile: FC = () => {
     const [contactInfo, setContactInfo] = useState<Array<Info>>([]);
 
     const [workDataDraft, setWorkDataDraft] = useState<WorkDataType>(EmptyWorkData);
+    const [basicInfoDraft, setBasicInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
     const [contactInfoDraft, setContactInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
 
     const [showWorkDataModal, setShowWorkDataModal] = useState<boolean>(false);
+    const [showBasicInfoModal, setShowBasicInfoModal] = useState<boolean>(false);
     const [showContactInfoModal, setShowContactInfoModal] = useState<boolean>(false);
 
     const fakeWorkData: Array<WorkDataType> = [
@@ -68,8 +70,6 @@ const Profile: FC = () => {
         setBasicInfo(fakeBasicInfo)
     }, [])
 
-    useEffect(() => { console.log(workDataDraft) }, [workDataDraft])
-
     function onSubmitWorkModal(): void {
         setWorkData([...workData, workDataDraft]);
         setWorkDataDraft(EmptyWorkData);
@@ -80,6 +80,12 @@ const Profile: FC = () => {
         setContactInfo([...contactInfo, contactInfoDraft]);
         setContactInfoDraft({ label: '', value: '', link: '' });
         setShowContactInfoModal(false);
+    }
+
+    function onSubmitBasicInfoModal(): void {
+        setBasicInfo([...basicInfo, basicInfoDraft]);
+        setBasicInfoDraft({ label: '', value: '', link: '' });
+        setShowBasicInfoModal(false);
     }
 
     return (
@@ -186,7 +192,10 @@ const Profile: FC = () => {
                             <div className="separator">Basic Info</div>
 
                             <div className='d-flex justify-content-end'>
-                                <button className='btn btn-primary d-flex align-items-center justify-content-between mb-2'>
+                                <button 
+                                    className='btn btn-primary d-flex align-items-center justify-content-between mb-2'
+                                    onClick={() => setShowBasicInfoModal(true)}
+                                >
                                     <span>Add Item</span>
                                     <AiOutlinePlus style={{ marginLeft: '0.25rem' }} />
                                 </button>
@@ -221,12 +230,20 @@ const Profile: FC = () => {
                 onSubmit={onSubmitWorkModal}
             />
 
-            <ContactInfoModal
+            <InfoModal
                 draft={contactInfoDraft}
                 onChangeDraft={setContactInfoDraft}
                 onClose={() => setShowContactInfoModal(false)}
                 show={showContactInfoModal}
                 onSubmit={onSubmitContactInfoModal}
+            />
+
+            <InfoModal
+                draft={basicInfoDraft}
+                onChangeDraft={setBasicInfoDraft}
+                onClose={() => setShowBasicInfoModal(false)}
+                show={showBasicInfoModal}
+                onSubmit={onSubmitBasicInfoModal}
             />
 
         </div>

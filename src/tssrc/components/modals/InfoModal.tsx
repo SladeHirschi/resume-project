@@ -16,16 +16,14 @@ type ContactInfoProps = {
     show: boolean
 }
 
-const ContactInfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: ContactInfoProps) => {
+const InfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: ContactInfoProps) => {
 
     const [showHyperLink, setShowHyperLink] = useState<boolean>(false);
-
-    useEffect(() => {console.log(showHyperLink)}, [showHyperLink])
 
     return (
         <Modal show={show} onHide={() => {onClose(); setShowHyperLink(false)}}>
             <Modal.Header closeButton>
-                <Modal.Title>Contact Info</Modal.Title>
+                <Modal.Title>Info</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="mb-3 row">
@@ -36,6 +34,7 @@ const ContactInfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: Con
                             id="label"
                             placeholder='Phone'
                             onChange={(e) => onChangeDraft({ ...draft, label: e.target.value })}
+                            autoFocus
                         />
                     </div>
                     <div className='col-md-6'>
@@ -77,4 +76,4 @@ const ContactInfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: Con
     );
 }
 
-export default ContactInfoModal
+export default InfoModal
