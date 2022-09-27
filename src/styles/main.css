@@ -182,9 +182,11 @@ body {
     overflow-y: scroll;
 }
 
-.medium-modal {
-    width: 60vw !important;
-    max-width: 60vw !important;
+@media (min-width: 992px) {
+    .medium-modal-lg {
+        width: 60vw !important;
+        max-width: 60vw !important;
+    }
 }
  
 /***************************************/

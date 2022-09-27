@@ -1,9 +1,11 @@
 import { FC, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import '../src/styles/main.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-notifications/lib/notifications.css';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 import { headerRoutes } from './routes';
+import '../src/styles/main.css'
 import Header from './tssrc/components/Header';
 import SideBar from './tssrc/components/SideBar';
 
@@ -23,6 +25,7 @@ const App: FC = () => {
                         <RouterProvider router={routes} />
                     </div>
                 </div>
+                <NotificationContainer/>
             </div>
         </>
     );
