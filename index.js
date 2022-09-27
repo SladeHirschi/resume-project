@@ -36,6 +36,7 @@ app.post('/sendEmail', (req, res) => {
 	console.log("sender: ", req.body.sender)
 	if (sender.length === 0) {
 		res.send({ error: 'Must contain a sender email' })
+		return;
 	}
 	console.log(process.env.GMAIL_EMAIL, process.env.GMAIL_PASSWORD)
 	var transporter = nodemailer.createTransport({

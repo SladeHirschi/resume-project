@@ -2,6 +2,7 @@ import { useEffect, useState, FC } from "react";
 import { AiOutlinePlus } from 'react-icons/ai';
 import { MdLocationOn, MdTextsms, MdOutlineEmail } from 'react-icons/md';
 import { TbBrandGithub } from 'react-icons/tb';
+import { NotificationManager } from 'react-notifications';
 
 import { WorkDataType, EmptyWorkData } from "../helpers/types/workDataType";
 import WorkDataModal from "../components/modals/WorkDataModal";
@@ -80,18 +81,21 @@ const Profile: FC = () => {
         setWorkData([...workData, workDataDraft]);
         setWorkDataDraft(EmptyWorkData);
         setShowWorkDataModal(false);
+        NotificationManager.success("Work Info Added successfully.", "Success", 3000);
     }
 
     function onSubmitContactInfoModal(): void {
         setContactInfo([...contactInfo, contactInfoDraft]);
         setContactInfoDraft({ label: '', value: '', link: '' });
         setShowContactInfoModal(false);
+        NotificationManager.success("Contact Info Added successfully.", "Success", 3000);
     }
 
     function onSubmitBasicInfoModal(): void {
         setBasicInfo([...basicInfo, basicInfoDraft]);
         setBasicInfoDraft({ label: '', value: '', link: '' });
         setShowBasicInfoModal(false);
+        NotificationManager.success("Basic Info Added successfully.", "Success", 3000);
     }
 
     async function onSubmitSMSModal() {
@@ -105,7 +109,8 @@ const Profile: FC = () => {
                 body: body
             });
             setShowSMSModal(false);
-        } catch(e) {
+            NotificationManager.success("Thank you for the text message!", "Success", 3000);
+        } catch (e) {
             alert(e);
         }
     }
@@ -121,10 +126,10 @@ const Profile: FC = () => {
                 },
                 body: body
             });
-            var data = await response.json()
-            console.log("response: ", data);
             setShowEmailModal(false);
-        } catch(e) {
+            NotificationManager.success("Thank you for the email!", "Success", 3000);
+
+        } catch (e) {
             alert(e);
         }
     }
@@ -198,7 +203,7 @@ const Profile: FC = () => {
                                     </button>
                                 </div>
                                 <div className='col-xl-4'>
-                                    <a 
+                                    <a
                                         className='btn btn-dark d-flex align-items-center w-100 fit-content-desktop'
                                         href="https://github.com/SladeHirschi"
                                         target="_blank"
@@ -279,7 +284,7 @@ const Profile: FC = () => {
             <WorkDataModal
                 draft={workDataDraft}
                 onChangeDraft={setWorkDataDraft}
-                onClose={() => setShowWorkDataModal(false)}
+                onClose={() => {setShowWorkDataModal(false); setWorkDataDraft(EmptyWorkData)}}
                 show={showWorkDataModal}
                 onSubmit={onSubmitWorkModal}
             />
@@ -287,7 +292,7 @@ const Profile: FC = () => {
             <InfoModal
                 draft={contactInfoDraft}
                 onChangeDraft={setContactInfoDraft}
-                onClose={() => setShowContactInfoModal(false)}
+                onClose={() => {setShowContactInfoModal(false); setContactInfoDraft({label: '', value: '', link: ''})}}
                 show={showContactInfoModal}
                 onSubmit={onSubmitContactInfoModal}
             />
@@ -295,7 +300,7 @@ const Profile: FC = () => {
             <InfoModal
                 draft={basicInfoDraft}
                 onChangeDraft={setBasicInfoDraft}
-                onClose={() => setShowBasicInfoModal(false)}
+                onClose={() => {setShowBasicInfoModal(false); setContactInfoDraft({label: '', value: '', link: ''})}}
                 show={showBasicInfoModal}
                 onSubmit={onSubmitBasicInfoModal}
             />
@@ -303,7 +308,7 @@ const Profile: FC = () => {
             <SMSModal
                 draft={SMSMessage}
                 onChangeDraft={setSMSMessage}
-                onClose={() => setShowSMSModal(false)}
+                onClose={() => {setShowSMSModal(false); setSMSMessage('')}}
                 show={showSMSModal}
                 onSubmit={onSubmitSMSModal}
             />
@@ -311,7 +316,7 @@ const Profile: FC = () => {
             <EmailModal
                 draft={emailDraft}
                 onChangeDraft={setEmailDraft}
-                onClose={() => setShowEmailModal(false)}
+                onClose={() => {setShowEmailModal(false); setEmailDraft({body: '', sender: ''})}}
                 show={showEmailModal}
                 onSubmit={onSubmitEmailModal}
             />

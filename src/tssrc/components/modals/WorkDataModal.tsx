@@ -30,7 +30,7 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
     }
 
     return (
-        <Modal show={show} onHide={onClose} dialogClassName="medium-modal">
+        <Modal show={show} onHide={onClose} dialogClassName="medium-modal-lg">
             <Modal.Header closeButton>
                 <Modal.Title>New Work Entry</Modal.Title>
             </Modal.Header>
