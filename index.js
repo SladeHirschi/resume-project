@@ -1,11 +1,33 @@
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const mysql = require('mysql');
+const path = require('path');
+
+const con = mysql.createConnection({
+	host: process.env.DATABASE_HOST,
+	user: process.env.DATABASE_USERNAME,
+	password: process.env.DATABASE_PASSWORD,
+});
+
+con.connect(function (err) {
+	if (err) {
+		console.error('Database connection failed: ' + err.stack);
+		return;
+	}
+	console.log("Connected!");
+});
 
 const app = express()
 
 app.use(express.urlencoded({ extended: false }))
 app.use(cors({ credentials: true, origin: '*' }))
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/', function (req, res) {
+	res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const port = process.env.PORT || 8080;
 
@@ -26,7 +48,7 @@ app.post('/sendSMS', (req, res) => {
 		.then(message => console.log(message.sid))
 		.done();
 
-	res.json({success: true})
+	res.json({ success: true })
 
 })
 
@@ -62,7 +84,7 @@ app.post('/sendEmail', (req, res) => {
 		}
 	});
 
-	res.json({success: true})
+	res.json({ success: true })
 
 })
 
