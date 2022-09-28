@@ -25,7 +25,7 @@ app.use(cors({ credentials: true, origin: '*' }))
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('/', function (req, res) {
+app.get('/*', function (req, res) {
 	console.log("CAN YOU SEE THIS?")
 	res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
