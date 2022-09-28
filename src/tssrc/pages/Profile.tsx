@@ -101,7 +101,7 @@ const Profile: FC = () => {
     async function onSubmitSMSModal() {
         var body = 'message=' + encodeURIComponent(SMSMessage);
         try {
-            const response = await fetch('http://localhost:8080/sendSMS', {
+            const response = await fetch(process.env.BASE_URL + '/sendSMS', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -119,7 +119,7 @@ const Profile: FC = () => {
         var body = 'body=' + encodeURIComponent(emailDraft.body);
         body += '&sender=' + encodeURIComponent(emailDraft.sender);
         try {
-            const response: any = await fetch('http://localhost:8080/sendEmail', {
+            const response: any = await fetch(process.env.BASE_URL + '/sendEmail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
