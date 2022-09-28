@@ -118,6 +118,7 @@ const Profile: FC = () => {
     async function onSubmitEmailModal() {
         var body = 'body=' + encodeURIComponent(emailDraft.body);
         body += '&sender=' + encodeURIComponent(emailDraft.sender);
+        console.log("BASE_URL : ", process.env.BASE_URL )
         try {
             const response: any = await fetch(process.env.BASE_URL + '/sendEmail', {
                 method: 'POST',
