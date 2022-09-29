@@ -101,7 +101,7 @@ const Profile: FC = () => {
     async function onSubmitSMSModal() {
         var body = 'message=' + encodeURIComponent(SMSMessage);
         try {
-            const response = await fetch(process.env.REACT_APP_BASE_URL + '/sendSMS', {
+            const response = await fetch('http://localhost:8080' + '/sendSMS', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -118,15 +118,16 @@ const Profile: FC = () => {
     async function onSubmitEmailModal() {
         var body = 'body=' + encodeURIComponent(emailDraft.body);
         body += '&sender=' + encodeURIComponent(emailDraft.sender);
-        console.log("REACT_APP_BASE_URL : ", process.env.REACT_APP_BASE_URL )
+        console.log("BASE_URL : ", 'http://localhost:8080' )
         try {
-            const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/sendEmail', {
+            const response: any = await fetch('http://localhost:8080' + '/sendEmail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: body
             });
+            console.log("response: ", response)
             setShowEmailModal(false);
             NotificationManager.success("Thank you for the email!", "Success", 3000);
 
