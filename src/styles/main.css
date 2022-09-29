@@ -9,6 +9,8 @@
     --light-gray-color: #778da9;
     --header-height: 4rem;
     --side-bar-width: 3rem;
+    --blue-color: #76d4fc;
+    --blue-text-color: #024d70;
 }
 /********** Main Styles ***************/
 html * {
@@ -29,6 +31,10 @@ body {
     padding: 0.5rem;
     width: 100%;
     z-index: 3;
+}
+.header-home:hover{
+    transform: scale(1.1);
+    cursor: pointer;
 }
 .side-bar {
     height: 100%;
@@ -65,6 +71,30 @@ body {
 /***************************************/
 /********** Pages Styles ***************/
 
+/********** Projects ***************/
+
+.login-screen {
+    /* background-color: var(--primary-color); */
+}
+
+.login-card {
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 5px;
+    width: 40%;
+    padding: 4rem 2rem;
+}
+
+.login-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.resume-title {
+    color: var(--blue-text-color)
+}
 
 /********** Projects ***************/
 
