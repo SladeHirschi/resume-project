@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
-const mysql = require('mysql');
 const path = require('path');
 const router = require('./src/api/routes/routes');
 const user_controller = require('./src/api/controllers/userController');

@@ -24,12 +24,7 @@ const App: FC = () => {
             setIsLoggedIn(true);
         }
     }, []);
-
-    function login(): void {
-        setIsLoggedIn(true);
-        window.sessionStorage.setItem("loggedIn", "true");
-    }
-
+    
     return (
         <>
             {isLoggedIn ?
@@ -45,7 +40,7 @@ const App: FC = () => {
                 </div>
             : 
                 <Login 
-                    onLogin={login}
+                    onLogin={setIsLoggedIn}
                 />
             }
 

@@ -99,7 +99,7 @@ const Profile: FC = () => {
     }
 
     async function onSubmitSMSModal() {
-        var body = 'message=' + encodeURIComponent(SMSMessage);
+        var body: string = 'message=' + encodeURIComponent(SMSMessage);
         try {
             const response = await fetch('http://localhost:8080' + '/sendSMS', {
                 method: 'POST',
@@ -116,7 +116,7 @@ const Profile: FC = () => {
     }
 
     async function onSubmitEmailModal() {
-        var body = 'body=' + encodeURIComponent(emailDraft.body);
+        var body: string = 'body=' + encodeURIComponent(emailDraft.body);
         body += '&sender=' + encodeURIComponent(emailDraft.sender);
         console.log("BASE_URL : ", 'http://localhost:8080' )
         try {
