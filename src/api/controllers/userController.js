@@ -1,10 +1,12 @@
 const user_model = require('../models/userModel.js');
 
-exports.login = (req, res) => {
-    var email = req.body.email;
-    var password = req.body.password;
+exports.login = async (req, res) => {
+    var user = new user_model.User()
+    user.email = req.body.email;
+    user.password = req.body.password;
 
-    var { success, message, code } = user_model.login(email, password);
+    var response = await user_model.login(user);
+    console.log("RESPOnSE: ", response)
     // res.sendStatus(code);
-    res.json({ message: message })
+    // res.status(code).json({ message: message })
 }

@@ -1,19 +1,37 @@
 const con = require('../database/databaseInit');
+const util = require('util');
+const bcrypt = require('bcrypt');
 
-exports.login = (email, password) => {
+const query = util.promisify(con.query).bind(con);
 
-    con.query('SELECT password FROM users WHERE email = ?;', [email], function (err, result) {
-        if (err) throw err;
-        console.log("result: ", result);
-        storedPassword = result[0]?.password;
+exports.User = class User {
+    constructor(id = null, firstName = null, lastName = null, dateOfBirth = null, phoneNumber = null, email = null, password = null, created = null) {
+        this.id = id
+        this.firstName = firstName
+        this.lastName = lastName
+        this.dateOfBirth = dateOfBirth
+        this.phoneNumber = phoneNumber,
+            this.email = email,
+            this.password = password
+        this.created = created
+    }
+}
 
-        if (result.length === 0) {
-            // if there is no user with that email
-            return { success: true, message: 'No user with email: ' + email + ' was found.', code: 401 };
+exports.login = async (user) => {
+    var result = await query('SELECT password FROM users WHERE email = ?;', [user.email])
+    storedPassword = result[0]?.password;
+
+    if (result.length !== 0) {
+        console.log("something");
+        var validPassword = await bcrypt.compare(storedPassword, user.password);
+        if (validPassword) {
+            return { success: true, message: "Valid password", code: 200 };
+        } else {
+            return { success: false, message: "Invalid Password", code: 400 };
         }
-        console.log(storedPassword);
-        console.log("password: ", password);
-    });
+    } else {
+        return { success: false, message: "User does not exist", code: 401 };
+    }
 
-    return { success: true, message: '', code: 200 };
+
 }
