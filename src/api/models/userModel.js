@@ -11,8 +11,8 @@ exports.User = class User {
         this.lastName = lastName
         this.dateOfBirth = dateOfBirth
         this.phoneNumber = phoneNumber,
-            this.email = email,
-            this.password = password
+        this.email = email,
+        this.password = password
         this.created = created
     }
 }
@@ -32,6 +32,4 @@ exports.login = async (user) => {
     } else {
         return { success: false, message: "User does not exist", code: 401 };
     }
-
-
 }
