@@ -11,6 +11,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cors({ credentials: true, origin: '*' }))
 app.use(express.static(path.join(__dirname, 'build')));
 app.post('/login', user_controller.login);
+app.post('/signUp', user_controller.signUp);
 app.use('/', router);
 
 app.get('/*', function (req, res) {

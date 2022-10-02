@@ -33,3 +33,25 @@ exports.login = async (user) => {
         return { success: false, message: "User does not exist", code: 401 };
     }
 }
+
+exports.signUp = async (user) => {
+    var salt = await bcrypt.genSalt(10);
+    var hashedPassword = await bcrypt.hash(user.password, salt);
+    console.log("hashed password: ", hashedPassword)
+    try {
+        var result = await query(`
+            INSERT INTO users
+                (first_name, last_name, date_of_birth, phone_number, email, password, created)
+            VALUES
+                (?, ?, ?, ?, ?, ?, NOW())
+        `, [user.firstName, user.lastName, user.dateOfBirth, user.phoneNumber, user.email, hashedPassword])
+        console.log("result: ", result)
+    } catch (err) {
+        if (err.code == 'ER_DUP_ENTRY') {
+            return {success: false, message: 'duplicate email', code: 409};
+        } else {
+            return {success: false, message: 'there was a problem inserting', code: 500};
+
+        }
+    }
+}

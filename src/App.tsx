@@ -2,17 +2,21 @@ import { FC, useEffect, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-notifications/lib/notifications.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationContainer } from 'react-notifications';
 
-import { headerRoutes } from './routes';
+import { appRoutes, outsideRoutes } from './routes';
 import '../src/styles/main.css'
 import Header from './tssrc/components/Header';
 import SideBar from './tssrc/components/SideBar';
 import Login from './tssrc/pages/Login';
 
 const routes = createBrowserRouter(
-    headerRoutes
+    appRoutes
 );
+
+const nonAuthenticatedRoutes = createBrowserRouter(
+    outsideRoutes
+)
 
 const App: FC = () => {
 
@@ -24,7 +28,7 @@ const App: FC = () => {
             setIsLoggedIn(true);
         }
     }, []);
-    
+
     return (
         <>
             {isLoggedIn ?
@@ -36,14 +40,13 @@ const App: FC = () => {
                             <RouterProvider router={routes} />
                         </div>
                     </div>
-                    <NotificationContainer />
                 </div>
-            : 
-                <Login 
-                    onLogin={setIsLoggedIn}
-                />
+                :
+                <div className='w-100 h-100'>
+                    <RouterProvider router={nonAuthenticatedRoutes} />
+                </div>
             }
-
+            <NotificationContainer />
         </>
     );
 }
