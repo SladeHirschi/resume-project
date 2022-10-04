@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 import SignUp from '../pages/SignUp';
 
-const Login = () => {
+const Login: FC = () => {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');

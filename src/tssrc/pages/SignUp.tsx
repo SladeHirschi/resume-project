@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { NotificationManager } from 'react-notifications';
-import { Form, InputGroup } from 'react-bootstrap';
+import { Formik, Field, Form, FormikHelpers } from 'formik';
+import * as Yup from 'yup';
 
-type UserDraft = {
+import formatPhone from '../helpers/formatters/phoneNumberFormatter';
+
+interface UserDraft {
     firstName: string
     lastName: string
     phoneNumber: string
@@ -13,32 +16,32 @@ type UserDraft = {
     confirmPassword: string
 }
 
-const SignUp = () => {
+const SignupSchema = Yup.object().shape({
+    firstName: Yup.string()
+        .min(2, 'Too Short!')
+        .max(50, 'Too Long!')
+        .required('Required'),
+    lastName: Yup.string()
+        .min(2, 'Too Short!')
+        .max(50, 'Too Long!')
+        .required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+    phoneNumber: Yup.string().required('Required').length(10, 'Invalid Phone Number'),
+    password: Yup.string().required('Required').min(8, 'Must be more than 8 Characters'),
+    confirmPassword: Yup.string()
+     .oneOf([Yup.ref('password'), null], 'Passwords must match')
+});
+
+const SignUp: FC = () => {
 
     const emptyDraft = { firstName: '', lastName: '', phoneNumber: '', phoneNumberDisplay: '', dateOfBirth: '', email: '', password: '', confirmPassword: '' }
 
-    const [userDraft, setUserDraft] = useState<UserDraft>(emptyDraft);
-    const [validated, setValidated] = useState<boolean>(false);
-
-    //validation 
-
-    function validateForm(): boolean {
-        var emailVerified = userDraft.email
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            );
-        console.log("emailVer: ", emailVerified)
-        return false;
-    }
-
-    async function signUp() {
-        var validBody: boolean = validateForm();
-        var body: string = 'firstName=' + encodeURIComponent(userDraft.firstName);
-        body += '&lastName=' + encodeURIComponent(userDraft.lastName);
-        body += '&email=' + encodeURIComponent(userDraft.email);
-        body += '&phoneNumber=' + encodeURIComponent(userDraft.phoneNumber);
-        body += '&password=' + encodeURIComponent(userDraft.password);
+    async function signUp(values: UserDraft) {
+        var body: string = 'firstName=' + encodeURIComponent(values.firstName);
+        body += '&lastName=' + encodeURIComponent(values.lastName);
+        body += '&email=' + encodeURIComponent(values.email);
+        body += '&phoneNumber=' + encodeURIComponent(values.phoneNumber);
+        body += '&password=' + encodeURIComponent(values.password);
         const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/signUp', {
             method: 'POST',
             headers: {
@@ -52,104 +55,125 @@ const SignUp = () => {
         }
     }
 
-    function formatPhone(text: string): string {
-        if (!text) return text;
-        var currentValue = text.replace(/[^\d]/g, '');
-        var cvLength = currentValue.length;
-
-        if (!userDraft.phoneNumberDisplay || text.length > userDraft.phoneNumberDisplay.length) {
-            if (cvLength < 4) return currentValue;
-            if (cvLength < 7) return `(${currentValue.slice(0, 3)}) ${currentValue.slice(3)}`;
-            return `(${currentValue.slice(0, 3)}) ${currentValue.slice(3, 6)}-${currentValue.slice(6, 10)}`;
-        } else {
-            return text
-        }
+    function onChangePhoneNumber(setFieldValue: Function, text: string): void {
+        var cleaned = text.replace(/[- )(]/g,'');
+        console.log("cleaned: ", cleaned)
+        setFieldValue('phoneNumber', cleaned); 
+        setFieldValue('phoneNumberDisplay', formatPhone(text))
     }
 
     return (
-        <Form validated={validated} className='d-flex justify-content-center align-items-center w-100 h-100' noValidate onSubmit={signUp}>
+        <div className='d-flex justify-content-center align-items-center w-100 h-100'>
             <div className='login-card'>
                 <div className='login-header'>
                     <img src={require("../../assets/logo.png")} height='64px' width='64px'></img>
                     <h4 className='ms-2 resume-title'>Resume</h4>
                 </div>
-                <div className='row mb-3'>
-                    <Form.Group controlId="validationCustom01" className="col">
-                        <Form.Control
-                            onChange={(e) => setUserDraft({ ...userDraft, firstName: e.target.value })}
-                            type="text"
-                            className="form-control form-control-lg"
-                            placeholder="First Name"
-                            value={userDraft.firstName}
-                            required
-                        />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    </Form.Group>
+                <Formik
+                    initialValues={emptyDraft}
+                    onSubmit={(
+                        values: UserDraft,
+                        { setSubmitting }: FormikHelpers<UserDraft>
+                    ) => {
+                        signUp(values);
+                        setSubmitting(false);
+                    }}
+                    validationSchema={SignupSchema}
+                >
+                    {({ errors, touched, setFieldValue, values }) => <Form>
 
-                    <div className="col">
-                        <input
-                            onChange={(e) => setUserDraft({ ...userDraft, lastName: e.target.value })}
-                            type="text"
-                            className="form-control form-control-lg"
-                            placeholder="Last Name"
-                            value={userDraft.lastName}
+                        <div className='row mb-3'>
+                            <div className="col">
+                                <Field
+                                    name="firstName"
+                                    className={"form-control form-control-lg" + (errors.firstName && touched.firstName ? ' is-invalid' : '')}
+                                    placeholder="First Name"
+                                />
+                                {errors.firstName && touched.firstName ? (
+                                    <div className='text-danger'>{errors.firstName}</div>
+                                ) : null}
+                            </div>
 
-                        />
-                    </div>
-                </div>
+                            <div className="col">
+                                <Field
+                                    name="lastName"
+                                    className={"form-control form-control-lg" + (errors.lastName && touched.lastName ? ' is-invalid' : '')}
+                                    placeholder="Last Name"
 
-                <div className='row mb-3'>
-                    <div className="col">
-                        <input
-                            onChange={(e) => setUserDraft({ ...userDraft, email: e.target.value })}
-                            type="email"
-                            className="form-control form-control-lg"
-                            placeholder="Email"
-                            value={userDraft.email}
-                        />
-                    </div>
-                </div>
+                                />
+                                {errors.lastName && touched.lastName ? (
+                                    <div className='text-danger'>{errors.lastName}</div>
+                                ) : null}
+                            </div>
+                        </div>
 
-                <div className='row mb-3'>
-                    <div className="col">
-                        <input
-                            onChange={(e) => setUserDraft({ ...userDraft, phoneNumberDisplay: formatPhone(e.target.value), phoneNumber: e.target.value })}
-                            type="text"
-                            className="form-control form-control-lg"
-                            placeholder="Phone Number"
-                            value={userDraft.phoneNumberDisplay}
-                        />
-                    </div>
-                </div>
+                        <div className='row mb-3'>
+                            <div className="col">
+                                <Field
+                                    name="email"
+                                    type="email"
+                                    className={"form-control form-control-lg" + (errors.email && touched.email ? ' is-invalid' : '')}
+                                    placeholder="Email"
+                                />
+                                {errors.email && touched.email ? (
+                                    <div className='text-danger'>{errors.email}</div>
+                                ) : null}
+                            </div>
+                        </div>
 
-                <div className='row mb-3'>
-                    <div className="col">
-                        <input
-                            onChange={(e) => setUserDraft({ ...userDraft, password: e.target.value })}
-                            type="password"
-                            className="form-control form-control-lg"
-                            placeholder="Password"
-                            value={userDraft.password}
-                        />
-                    </div>
+                        <div className='row mb-3'>
+                            <div className="col">
+                                <Field 
+                                    as="input"
+                                    name="phoneNumber"
+                                    onChange={(e: { target: { value: string; }; }) => onChangePhoneNumber(setFieldValue, e.target.value)}
+                                    type="text"
+                                    className="form-control form-control-lg"
+                                    placeholder="Phone Number"
+                                    value={values['phoneNumberDisplay']}
+                                />
+                                {errors.phoneNumber && touched.phoneNumber ? (
+                                    <div className='text-danger'>{errors.phoneNumber}</div>
+                                ) : null}
+                            </div>
+                        </div>
 
-                    <div className="col">
-                        <input
-                            onChange={(e) => setUserDraft({ ...userDraft, confirmPassword: e.target.value })}
-                            type="password"
-                            className="form-control form-control-lg"
-                            placeholder="Confirm Password"
-                            value={userDraft.confirmPassword}
-                        />
-                    </div>
-                </div>
+                        <div className='row mb-3'>
+                            <div className="col">
+                                <Field
+                                    name="password"
+                                    type="password"
+                                    className={"form-control form-control-lg" + (errors.password && touched.password ? ' is-invalid' : '')}
+                                    placeholder="Password"
 
-                <button className='btn btn-primary btn-lg w-100 mb-3' onClick={signUp}>Submit</button>
+                                />
+                                {errors.password && touched.password ? (
+                                    <div className='text-danger'>{errors.password}</div>
+                                ) : null}
+                            </div>
+
+                            <div className="col">
+                                <Field
+                                    name="confirmPassword"
+                                    type="password"
+                                    className={"form-control form-control-lg" + (errors.confirmPassword && touched.confirmPassword ? ' is-invalid' : '')}
+                                    placeholder="Confirm Password"
+                                />
+                                {errors.confirmPassword && touched.confirmPassword ? (
+                                    <div className='text-danger'>{errors.confirmPassword}</div>
+                                ) : null}
+                            </div>
+                        </div>
+
+                        <button type='submit' className='btn btn-primary btn-lg w-100 mb-3'>Submit</button>
+                    </Form>}
+                </Formik>
+
                 <div className="separator mb-3">Or</div>
                 <a href='/login' className='btn btn-dark btn-lg w-100'> Login</a>
 
             </div>
-        </Form>
+        </div>
     );
 }
 
