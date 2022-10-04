@@ -22,7 +22,6 @@ exports.login = async (user) => {
     storedPassword = result[0]?.password;
 
     if (result.length !== 0) {
-        console.log("something");
         var validPassword = await bcrypt.compare(storedPassword, user.password);
         if (validPassword) {
             return { success: true, message: "Valid password", code: 200 };
@@ -37,7 +36,6 @@ exports.login = async (user) => {
 exports.signUp = async (user) => {
     var salt = await bcrypt.genSalt(10);
     var hashedPassword = await bcrypt.hash(user.password, salt);
-    console.log("hashed password: ", hashedPassword)
     try {
         var result = await query(`
             INSERT INTO users
@@ -45,13 +43,12 @@ exports.signUp = async (user) => {
             VALUES
                 (?, ?, ?, ?, ?, ?, NOW())
         `, [user.firstName, user.lastName, user.dateOfBirth, user.phoneNumber, user.email, hashedPassword])
-        console.log("result: ", result)
+        return {success: true, message: 'user created', code: 201};
     } catch (err) {
         if (err.code == 'ER_DUP_ENTRY') {
             return {success: false, message: 'duplicate email', code: 409};
         } else {
             return {success: false, message: 'there was a problem inserting', code: 500};
-
         }
     }
 }

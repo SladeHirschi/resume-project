@@ -69,7 +69,6 @@ const Projects: FC = () => {
     ];
 
     useEffect(() => {
-        console.log("getting project data");
         setProjects(fakeProjectsData)
     }, [])
 

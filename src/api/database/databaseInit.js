@@ -12,7 +12,6 @@ con.connect(function (err) {
 		console.error('Database connection failed: ' + err.stack);
 		return;
 	}
-	console.log("Connected!");
 });
 
 module.exports = con;

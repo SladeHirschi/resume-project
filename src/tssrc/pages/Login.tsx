@@ -13,7 +13,6 @@ const Login: FC = () => {
 
         var body: string = 'email=' + encodeURIComponent(email);
         body += '&password=' + encodeURIComponent(password);
-        console.log(process.env.REACT_APP_BASE_URL)
         const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/login', {
             method: 'POST',
             headers: {
