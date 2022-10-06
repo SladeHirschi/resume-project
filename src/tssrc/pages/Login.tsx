@@ -1,13 +1,33 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import React, { Dispatch, FC, SetStateAction, useEffect, useState, createRef } from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
-import SignUp from '../pages/SignUp';
+declare var google: any
 
 const Login: FC = () => {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+
+    useEffect(() => {
+        /*  global google  */
+        if (typeof google == 'undefined') {
+            return;
+        }
+        google.accounts.id.initialize({
+            client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("googleSignInButton"),
+            { theme: "outline", size: "large" }
+        );
+    }, [])
+
+    function handleCredentialResponse(response: any) {
+        console.log("Encoded JWT ID token: " + response.credential);
+        window.sessionStorage.setItem('jwt', response.credential);
+    }
 
     async function login() {
 
@@ -69,6 +89,7 @@ const Login: FC = () => {
                     </div>
 
                     <button className='btn btn-primary btn-lg w-100 mb-3' onClick={login}>Sign in</button>
+                    <div id="googleSignInButton"></div>
                     <div className="separator mb-3">Or</div>
                     <a href='/signUp' className='btn btn-dark btn-lg w-100'> Sign Up</a>
                 </>

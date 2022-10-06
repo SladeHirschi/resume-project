@@ -16,8 +16,12 @@ export const appRoutes: Array<RouteObject> = [
         errorElement: <NotFound />
     },
     {
+        path: "/home",
+        element: <Root />,
+    },
+    {
         path: "/projects",
-        element: <Projects />
+        element: <Projects /> 
     },
     {
         path: "/clients",
