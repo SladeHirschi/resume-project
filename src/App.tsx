@@ -22,8 +22,8 @@ const App: FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {
-        var loggedIn = window.sessionStorage.getItem("loggedIn");
-        if (loggedIn === "true") {
+        var jwt: string | null = window.sessionStorage.getItem("jwt");
+        if (jwt!= null && jwt.length !== 0) {
             setIsLoggedIn(true);
         }
     }, []);
