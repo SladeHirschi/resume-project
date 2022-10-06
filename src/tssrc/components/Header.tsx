@@ -5,7 +5,9 @@ const Header: FC = () => {
     return (
         <div>
             <div className="header">
-                <img src={require("../../assets/logo.png")} height='48px' width='48px'></img>
+                <a href={'/'}>
+                    <img className='header-home' src={require("../../assets/logo.png")} height='48px' width='48px'></img>
+                </a>
             </div>
         </div>
     );
