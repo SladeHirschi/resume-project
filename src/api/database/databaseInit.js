@@ -1,7 +1,10 @@
+const mysql = require('mysql');
+
 const con = mysql.createConnection({
 	host: process.env.DATABASE_HOST,
 	user: process.env.DATABASE_USERNAME,
 	password: process.env.DATABASE_PASSWORD,
+	database: process.env.DATABASE_NAME
 });
 
 con.connect(function (err) {
@@ -9,7 +12,6 @@ con.connect(function (err) {
 		console.error('Database connection failed: ' + err.stack);
 		return;
 	}
-	console.log("Connected!");
 });
 
-export default con;
+module.exports = con;

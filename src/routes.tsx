@@ -6,8 +6,10 @@ import Projects from './tssrc/pages/Projects'
 import Clients from './tssrc/pages/Clients'
 import Profile from './tssrc/pages/Profile'
 import { RouteObject } from 'react-router-dom';
+import SignUp from './tssrc/pages/SignUp';
+import Login from './tssrc/pages/Login';
 
-export const headerRoutes: Array<RouteObject> = [
+export const appRoutes: Array<RouteObject> = [
     {
         path: "/",
         element: <Root />,
@@ -25,4 +27,20 @@ export const headerRoutes: Array<RouteObject> = [
         path: "/profile",
         element: <Profile />
     }
+]
+
+export const outsideRoutes: Array<RouteObject> = [
+    {
+        path: "/",
+        element: <Login />,
+        errorElement: <NotFound />
+    },
+    {
+        path: "/login",
+        element: <Login />
+    },
+    {
+        path: "/signUp",
+        element: <SignUp />
+    },
 ]
