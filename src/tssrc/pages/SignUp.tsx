@@ -51,14 +51,20 @@ const SignUp: FC = () => {
         });
 
         if (response.status === 409) {
-            NotificationManager.error('This email already exists', 'Duplicate')
+            NotificationManager.error('This email already exists', 'Duplicate');
+            return;
+        } else if (response.status === 500) {
+            NotificationManager.error('There was a problem Signing Up', 'Error');
+            return;
         }
+        NotificationManager.success('Welcome', 'Success');
+        window.sessionStorage.setItem('loggedIn', 'true');
+        window.location.href = "/profile";
     }
 
     function onChangePhoneNumber(setFieldValue: Function, text: string): void {
         var cleaned = text.replace(/[- )(]/g,'');
-        console.log("cleaned: ", cleaned)
-        setFieldValue('phoneNumber', cleaned); 
+        setFieldValue('phoneNumber', cleaned.substring(0, 10)); 
         setFieldValue('phoneNumberDisplay', formatPhone(text))
     }
 

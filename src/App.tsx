@@ -8,7 +8,6 @@ import { appRoutes, outsideRoutes } from './routes';
 import '../src/styles/main.css'
 import Header from './tssrc/components/Header';
 import SideBar from './tssrc/components/SideBar';
-import Login from './tssrc/pages/Login';
 
 const routes = createBrowserRouter(
     appRoutes
