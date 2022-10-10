@@ -1,6 +1,7 @@
 const con = require('../database/databaseInit');
 const util = require('util');
 const bcrypt = require('bcrypt');
+const authModel = require('./authModel');
 
 const query = util.promisify(con.query).bind(con);
 
@@ -11,25 +12,34 @@ exports.User = class User {
         this.lastName = lastName
         this.dateOfBirth = dateOfBirth
         this.phoneNumber = phoneNumber,
-        this.email = email,
-        this.password = password
+            this.email = email,
+            this.password = password
         this.created = created
     }
 }
 
 exports.login = async (user) => {
-    var result = await query('SELECT password FROM users WHERE email = ?;', [user.email])
-    storedPassword = result[0]?.password;
+    var result = await query('SELECT id, first_name, last_name, password FROM users WHERE email = ?;', [user.email])
+    var storedPassword = result[0]?.password;
+    var userId = result[0]?.id;
+    var firstName = result[0]?.first_name;
+    var lastName = result[0]?.last_name;
 
     if (result.length !== 0) {
-        var validPassword = await bcrypt.compare(storedPassword, user.password);
+        var validPassword = await bcrypt.compare(user.password, storedPassword);
         if (validPassword) {
-            return { success: true, message: "Valid password", code: 200 };
+            var payload = {
+                userId,
+                firstName,
+                lastName
+            }
+            var token = authModel.createJWT(payload);
+            return { success: true, message: "Valid password", code: 200, token: token };
         } else {
-            return { success: false, message: "Invalid Password", code: 400 };
+            return { success: false, message: "Invalid Password", code: 400, token: null };
         }
     } else {
-        return { success: false, message: "User does not exist", code: 401 };
+        return { success: false, message: "User does not exist", code: 401, token: null };
     }
 }
 
@@ -43,12 +53,12 @@ exports.signUp = async (user) => {
             VALUES
                 (?, ?, ?, ?, ?, ?, NOW())
         `, [user.firstName, user.lastName, user.dateOfBirth, user.phoneNumber, user.email, hashedPassword])
-        return {success: true, message: 'user created', code: 201};
+        return { success: true, message: 'user created', code: 201 };
     } catch (err) {
         if (err.code == 'ER_DUP_ENTRY') {
-            return {success: false, message: 'duplicate email', code: 409};
+            return { success: false, message: 'duplicate email', code: 409 };
         } else {
-            return {success: false, message: 'there was a problem inserting', code: 500};
+            return { success: false, message: 'there was a problem inserting', code: 500 };
         }
     }
 }

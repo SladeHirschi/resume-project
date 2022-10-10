@@ -1,6 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState, createRef } from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { NotificationManager } from 'react-notifications';
 
 declare var google: any
 
@@ -25,12 +26,12 @@ const Login: FC = () => {
     }, [])
 
     function handleCredentialResponse(response: any) {
-        console.log("Encoded JWT ID token: " + response.credential);
         window.sessionStorage.setItem('jwt', response.credential);
+        window.location.href = "/profile";
     }
 
-    async function login() {
-
+    async function login(e: any) {
+        e.preventDefault();
         var body: string = 'email=' + encodeURIComponent(email);
         body += '&password=' + encodeURIComponent(password);
         const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/login', {
@@ -40,6 +41,16 @@ const Login: FC = () => {
             },
             body: body
         });
+        if (response.status === 401) {
+            NotificationManager.error('Please check your credentials and try again', 'Authentication Failed', 3000);
+        } else if (response.status === 400) {
+            NotificationManager.error('Please check your credentials and try again', 'Authentication Failed', 3000);
+        } else if (response.status === 200) {
+            var responseBody = await response.json();
+            var jwt = responseBody.token;
+            window.sessionStorage.setItem('jwt', jwt);
+            window.location.href = "/profile";
+        }
     }
 
     return (
