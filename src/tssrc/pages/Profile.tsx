@@ -56,6 +56,7 @@ const Profile: FC = () => {
                 },
             });
             var basicInfoResponse = await response.json();
+            console.log("basic: ", basicInfoResponse)
             setBasicInfo(basicInfoResponse.basicInfo)
         }
 
@@ -75,22 +76,53 @@ const Profile: FC = () => {
         getContactInfo();
     }, [])
 
-    function onSubmitWorkModal(): void {
-        setWorkData([...workData, workDataDraft]);
+    async function onSubmitWorkModal() {
+        var body: string = 'occupation=' + encodeURIComponent(workDataDraft.occupation);
+        body += '&company=' + encodeURIComponent(workDataDraft.company);
+        body += '&description=' + encodeURIComponent(workDataDraft.description);
+        body += '&startDate=' + encodeURIComponent(workDataDraft.startDate);
+        body += '&endDate=' + encodeURIComponent(workDataDraft.endDate ?? '');
+        body += '&isCurrent=' + encodeURIComponent(workDataDraft.current ? 1 : 0);
+        body += '&type=' + encodeURIComponent(workDataDraft.type);
+        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/workData?userId=' + parseJWT(sessionStorage.jwt).userId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        })
         setWorkDataDraft(EmptyWorkData);
         setShowWorkDataModal(false);
         NotificationManager.success("Work Info Added successfully.", "Success", 3000);
     }
 
-    function onSubmitContactInfoModal(): void {
-        setContactInfo([...contactInfo, contactInfoDraft]);
+    async function onSubmitContactInfoModal() {
+        var body: string = 'label=' + encodeURIComponent(contactInfoDraft.label);
+        body += '&value=' + encodeURIComponent(contactInfoDraft.value);
+        body += '&hyperlink=' + encodeURIComponent(contactInfoDraft.link);
+        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/contactInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        })
         setContactInfoDraft({ label: '', value: '', link: '' });
         setShowContactInfoModal(false);
         NotificationManager.success("Contact Info Added successfully.", "Success", 3000);
     }
 
-    function onSubmitBasicInfoModal(): void {
-        setBasicInfo([...basicInfo, basicInfoDraft]);
+    async function onSubmitBasicInfoModal() {
+        var body: string = 'label=' + encodeURIComponent(basicInfoDraft.label);
+        body += '&value=' + encodeURIComponent(basicInfoDraft.value);
+        body += '&hyperlink=' + encodeURIComponent(basicInfoDraft.link);
+        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/basicInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        })
         setBasicInfoDraft({ label: '', value: '', link: '' });
         setShowBasicInfoModal(false);
         NotificationManager.success("Basic Info Added successfully.", "Success", 3000);
@@ -233,7 +265,7 @@ const Profile: FC = () => {
                                         <div key={index} className={'d-flex justify-content-between col-md-6'}>
                                             <span className='col-md-4'>{item.label}</span>
                                             <span className='col-md-8'>
-                                                {item.link.length > 0 ?
+                                                {item.link?.length > 0 ?
                                                     <a href={item.link} target="_blank" rel="noreferrer">{item.value}</a>
                                                     :
                                                     item.value
@@ -264,7 +296,7 @@ const Profile: FC = () => {
                                         <div key={index} className={'d-flex justify-content-between col-md-6'}>
                                             <span className='col-md-4'>{item.label}</span>
                                             <span className='col-md-8'>
-                                                {item.link.length > 0 ?
+                                                {item.link?.length > 0 ?
                                                     <a href={item.link} target="_blank" rel="noreferrer">{item.value}</a>
                                                     :
                                                     item.value
@@ -282,7 +314,7 @@ const Profile: FC = () => {
             <WorkDataModal
                 draft={workDataDraft}
                 onChangeDraft={setWorkDataDraft}
-                onClose={() => {setShowWorkDataModal(false); setWorkDataDraft(EmptyWorkData)}}
+                onClose={() => { setShowWorkDataModal(false); setWorkDataDraft(EmptyWorkData) }}
                 show={showWorkDataModal}
                 onSubmit={onSubmitWorkModal}
             />
@@ -290,7 +322,7 @@ const Profile: FC = () => {
             <InfoModal
                 draft={contactInfoDraft}
                 onChangeDraft={setContactInfoDraft}
-                onClose={() => {setShowContactInfoModal(false); setContactInfoDraft({label: '', value: '', link: ''})}}
+                onClose={() => { setShowContactInfoModal(false); setContactInfoDraft({ label: '', value: '', link: '' }) }}
                 show={showContactInfoModal}
                 onSubmit={onSubmitContactInfoModal}
             />
@@ -298,7 +330,7 @@ const Profile: FC = () => {
             <InfoModal
                 draft={basicInfoDraft}
                 onChangeDraft={setBasicInfoDraft}
-                onClose={() => {setShowBasicInfoModal(false); setContactInfoDraft({label: '', value: '', link: ''})}}
+                onClose={() => { setShowBasicInfoModal(false); setContactInfoDraft({ label: '', value: '', link: '' }) }}
                 show={showBasicInfoModal}
                 onSubmit={onSubmitBasicInfoModal}
             />
@@ -306,7 +338,7 @@ const Profile: FC = () => {
             <SMSModal
                 draft={SMSMessage}
                 onChangeDraft={setSMSMessage}
-                onClose={() => {setShowSMSModal(false); setSMSMessage('')}}
+                onClose={() => { setShowSMSModal(false); setSMSMessage('') }}
                 show={showSMSModal}
                 onSubmit={onSubmitSMSModal}
             />
@@ -314,7 +346,7 @@ const Profile: FC = () => {
             <EmailModal
                 draft={emailDraft}
                 onChangeDraft={setEmailDraft}
-                onClose={() => {setShowEmailModal(false); setEmailDraft({body: '', sender: ''})}}
+                onClose={() => { setShowEmailModal(false); setEmailDraft({ body: '', sender: '' }) }}
                 show={showEmailModal}
                 onSubmit={onSubmitEmailModal}
             />

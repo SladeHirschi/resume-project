@@ -26,4 +26,8 @@ router.get('/getWorkData', profile_controller.getWorkData)
 router.get('/getBasicInfo', profile_controller.getBasicInfo)
 router.get('/getContactInfo', profile_controller.getContactInfo)
 
+router.post('/workData', profile_controller.createWorkData)
+router.post('/basicInfo', profile_controller.createBasicInfo)
+router.post('/contactInfo', profile_controller.createContactInfo)
+
 module.exports = router
