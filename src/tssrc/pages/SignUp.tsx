@@ -57,9 +57,9 @@ const SignUp: FC = () => {
             NotificationManager.error('There was a problem Signing Up', 'Error');
             return;
         }
-        console.log("get JWT here")
         NotificationManager.success('Welcome', 'Success');
-        window.sessionStorage.setItem('loggedIn', 'true');
+        var responseBody = await response.json();
+        window.sessionStorage.setItem('jwt', responseBody.token);
         window.location.href = "/profile";
     }
 

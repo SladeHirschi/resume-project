@@ -9,6 +9,8 @@ import WorkDataModal from "../components/modals/WorkDataModal";
 import InfoModal from "../components/modals/InfoModal";
 import SMSModal from "../components/modals/SMSModal";
 import EmailModal from "../components/modals/EmailModal";
+import defaultFetch from "../helpers/fetch/defaultFetch";
+import parseJWT from "../helpers/fetch/jwt";
 
 type Info = {
     label: string
@@ -66,7 +68,17 @@ const Profile: FC = () => {
     ]
 
     useEffect(() => {
-        setWorkData(fakeWorkData)
+        const getWorkData = async (): Promise<void> => {
+            const response: any = await defaultFetch(process.env.REACT_APP_BASE_URL + '/getWorkData?userId=' + parseJWT(sessionStorage.jwt).userId, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'x-www-form-urlencoded'
+                },
+            });
+            console.log("response: ", await response.json())
+            setWorkData(fakeWorkData);
+        }
+        getWorkData();
     }, [])
 
     useEffect(() => {
