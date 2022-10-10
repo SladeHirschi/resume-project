@@ -36,37 +36,6 @@ const Profile: FC = () => {
     const [showBasicInfoModal, setShowBasicInfoModal] = useState<boolean>(false);
     const [showContactInfoModal, setShowContactInfoModal] = useState<boolean>(false);
 
-    const fakeWorkData: Array<WorkDataType> = [
-        {
-            occupation: 'Software Developer',
-            company: 'Easier Accounting',
-            description: 'Worked on CRM to provide good sotware for staff by adding, maintaining, and fixing features.',
-            startDate: '2021-05-25',
-            endDate: null,
-            type: 'work',
-            current: true
-        }
-    ];
-
-    const fakeContactInfo: Array<Info> = [
-        { label: 'Phone', value: '(435) 218-1442', link: '' },
-        { label: 'Email', value: 'sladehirsc@gmail.com', link: '' },
-        { label: 'Address', value: '275 North 100 West', link: '' },
-        { label: 'City', value: 'Washington', link: '' },
-        { label: 'State', value: 'Utah', link: '' },
-        { label: 'Zipcode', value: '84780', link: '' },
-    ]
-
-    const fakeBasicInfo: Array<Info> = [
-        { label: 'Gender', value: 'Male', link: '' },
-        { label: 'Age', value: '21', link: '' },
-        { label: 'Birthday', value: 'Jun 01 2001', link: '' },
-        { label: 'Occupation', value: 'Software Developer', link: '' },
-        { label: 'Marital Status', value: 'Married', link: '' },
-        { label: 'Grad Status', value: "Pursuing Bachelor of Science. (December 2022)", link: '' },
-        { label: 'LinkedIn', value: "LinkedIn", link: "https://linkedin.com/in/slade-hirschi-a45583206" },
-    ]
-
     useEffect(() => {
         const getWorkData = async (): Promise<void> => {
             const response: any = await defaultFetch(process.env.REACT_APP_BASE_URL + '/getWorkData?userId=' + parseJWT(sessionStorage.jwt).userId, {
@@ -75,18 +44,35 @@ const Profile: FC = () => {
                     'Content-type': 'x-www-form-urlencoded'
                 },
             });
-            console.log("response: ", await response.json())
-            setWorkData(fakeWorkData);
+            var workDataResponse = await response.json();
+            setWorkData(workDataResponse.workData);
         }
+
+        const getBasicInfo = async (): Promise<void> => {
+            const response: any = await defaultFetch(process.env.REACT_APP_BASE_URL + '/getBasicInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'x-www-form-urlencoded'
+                },
+            });
+            var basicInfoResponse = await response.json();
+            setBasicInfo(basicInfoResponse.basicInfo)
+        }
+
+        const getContactInfo = async (): Promise<void> => {
+            const response: any = await defaultFetch(process.env.REACT_APP_BASE_URL + '/getContactInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'x-www-form-urlencoded'
+                },
+            });
+            var contactInfoResponse = await response.json();
+            setContactInfo(contactInfoResponse.contactInfo)
+        }
+
         getWorkData();
-    }, [])
-
-    useEffect(() => {
-        setContactInfo(fakeContactInfo)
-    }, [])
-
-    useEffect(() => {
-        setBasicInfo(fakeBasicInfo)
+        getBasicInfo();
+        getContactInfo();
     }, [])
 
     function onSubmitWorkModal(): void {

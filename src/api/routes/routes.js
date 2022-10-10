@@ -23,5 +23,7 @@ const auth_model = require('../models/authModel');
 router.post('/sendEmail', email_controller.sendEmail)
 router.post('/sendSMS', twilio_controller.sendSMS)
 router.get('/getWorkData', profile_controller.getWorkData)
+router.get('/getBasicInfo', profile_controller.getBasicInfo)
+router.get('/getContactInfo', profile_controller.getContactInfo)
 
 module.exports = router
