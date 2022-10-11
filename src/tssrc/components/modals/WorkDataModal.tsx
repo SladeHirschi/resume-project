@@ -23,9 +23,9 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
 
     function makeCurrent(e: any): void {
         if (e.target.checked) {
-            onChangeDraft({ ...draft, current: true })
+            onChangeDraft({ ...draft, isCurrent: true })
         } else {
-            onChangeDraft({ ...draft, current: false })
+            onChangeDraft({ ...draft, isCurrent: false })
         }
     }
 
@@ -110,7 +110,7 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
                         <input
                             className="form-check-input"
                             type="checkbox"
-                            checked={draft.current === true}
+                            checked={draft.isCurrent === true}
                             id="current"
                             onChange={(e) => makeCurrent(e)}
                         />

@@ -53,12 +53,18 @@ exports.signUp = async (user) => {
             VALUES
                 (?, ?, ?, ?, ?, ?, NOW())
         `, [user.firstName, user.lastName, user.dateOfBirth, user.phoneNumber, user.email, hashedPassword])
-        return { success: true, message: 'user created', code: 201 };
+        var payload = {
+            userId: result.insertId,
+            firstName: user.firstName,
+            lastName: user.lastName
+        }
+        var token = authModel.createJWT(payload);
+        return { success: true, message: 'user created', code: 201, token: token };
     } catch (err) {
         if (err.code == 'ER_DUP_ENTRY') {
-            return { success: false, message: 'duplicate email', code: 409 };
+            return { success: false, message: 'duplicate email', code: 409, token: null };
         } else {
-            return { success: false, message: 'there was a problem inserting', code: 500 };
+            return { success: false, message: 'there was a problem inserting', code: 500, token: null };
         }
     }
 }
