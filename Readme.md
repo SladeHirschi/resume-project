@@ -22,3 +22,4 @@
 * Store users that sign in with google, and store their sub in the database to associate
 * Verify JWT's in backend to ensure they are valid and not expired
 * Add functionality to create project cards in projects section
+* Better 404 page
