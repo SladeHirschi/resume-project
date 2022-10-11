@@ -1,5 +1,7 @@
 const mysql = require('mysql');
 
+console.log("CAN YOU SEE THESE ON HEROKU: ", process.env.DATABASE_USERNAME, process.env.DATABASE_NAME)
+
 const con = mysql.createConnection({
 	host: process.env.DATABASE_HOST,
 	user: process.env.DATABASE_USERNAME,
