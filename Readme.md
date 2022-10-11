@@ -2,7 +2,7 @@
 
 ## This is my (work in process) weh app hosted on heroku with a free tier AWS database.
 
-### Technologies include: React.js • Typescript • Node.js ª MySql
+### Technologies include: React.js • Typescript • Node.js • MySql
 
 ## Login
 * To login and see my resume info use:
