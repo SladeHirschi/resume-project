@@ -37,7 +37,14 @@ const Profile: FC = () => {
     const [showBasicInfoModal, setShowBasicInfoModal] = useState<boolean>(false);
     const [showContactInfoModal, setShowContactInfoModal] = useState<boolean>(false);
 
+    const [loading, setLoading] = useState<boolean>(false);
+
     useEffect(() => {
+        getData();
+    }, [])
+
+    function getData(): void {
+        setLoading(true);
         const getWorkData = async (): Promise<void> => {
             const response: any = await defaultFetch(process.env.REACT_APP_BASE_URL + '/getWorkData?userId=' + parseJWT(sessionStorage.jwt).userId, {
                 method: 'GET',
@@ -57,7 +64,6 @@ const Profile: FC = () => {
                 },
             });
             var basicInfoResponse = await response.json();
-            console.log("basic: ", basicInfoResponse)
             setBasicInfo(basicInfoResponse.basicInfo)
         }
 
@@ -75,10 +81,11 @@ const Profile: FC = () => {
         getWorkData();
         getBasicInfo();
         getContactInfo();
-    }, [])
+        setLoading(false);
+    }
 
     async function onSubmitWorkModal() {
-        console.log("workDataDraft: ", workDataDraft)
+        setLoading(true);
         var body: string = 'occupation=' + encodeURIComponent(workDataDraft.occupation);
         body += '&company=' + encodeURIComponent(workDataDraft.company);
         body += '&description=' + encodeURIComponent(workDataDraft.description);
@@ -95,10 +102,12 @@ const Profile: FC = () => {
         })
         setWorkDataDraft(EmptyWorkData);
         setShowWorkDataModal(false);
+        getData();
         NotificationManager.success("Work Info Added successfully.", "Success", 3000);
     }
 
     async function onSubmitContactInfoModal() {
+        setLoading(true);
         var body: string = 'label=' + encodeURIComponent(contactInfoDraft.label);
         body += '&value=' + encodeURIComponent(contactInfoDraft.value);
         body += '&hyperlink=' + encodeURIComponent(contactInfoDraft.link);
@@ -111,10 +120,12 @@ const Profile: FC = () => {
         })
         setContactInfoDraft({ label: '', value: '', link: '' });
         setShowContactInfoModal(false);
+        getData();
         NotificationManager.success("Contact Info Added successfully.", "Success", 3000);
     }
 
     async function onSubmitBasicInfoModal() {
+        setLoading(true);
         var body: string = 'label=' + encodeURIComponent(basicInfoDraft.label);
         body += '&value=' + encodeURIComponent(basicInfoDraft.value);
         body += '&hyperlink=' + encodeURIComponent(basicInfoDraft.link);
@@ -127,10 +138,12 @@ const Profile: FC = () => {
         })
         setBasicInfoDraft({ label: '', value: '', link: '' });
         setShowBasicInfoModal(false);
+        getData();
         NotificationManager.success("Basic Info Added successfully.", "Success", 3000);
     }
 
     async function onSubmitSMSModal() {
+        setLoading(true);
         var body: string = 'message=' + encodeURIComponent(SMSMessage);
         try {
             const response = await fetch(process.env.REACT_APP_BASE_URL + '/sendSMS', {
@@ -141,6 +154,7 @@ const Profile: FC = () => {
                 body: body
             });
             setShowSMSModal(false);
+            getData();
             NotificationManager.success("Thank you for the text message!", "Success", 3000);
         } catch (e) {
             alert(e);
@@ -148,6 +162,7 @@ const Profile: FC = () => {
     }
 
     async function onSubmitEmailModal() {
+        setLoading(true);
         var body: string = 'body=' + encodeURIComponent(emailDraft.body);
         body += '&sender=' + encodeURIComponent(emailDraft.sender);
         try {
@@ -159,11 +174,20 @@ const Profile: FC = () => {
                 body: body
             });
             setShowEmailModal(false);
+            getData();
             NotificationManager.success("Thank you for the email!", "Success", 3000);
 
         } catch (e) {
             alert(e);
         }
+    }
+
+    if (loading) {
+        return (
+            <div className='w-100 h-100 d-flex justify-content-center align-items-center'>
+                <div className='spinner'></div>
+            </div>
+        );
     }
 
     return (
