@@ -233,7 +233,13 @@ const Profile: FC = () => {
 
                         <div style={{ flex: 1, minHeight: 0 }}>
                             <div className='d-flex align-items-baseline'>
-                                <h3>{parseJWT(sessionStorage.jwt).firstName + " " + parseJWT(sessionStorage.jwt).lastName}</h3>
+                                <h3>{
+                                    parseJWT(sessionStorage.jwt).firstName != undefined ? 
+                                        parseJWT(sessionStorage.jwt).firstName + " " + parseJWT(sessionStorage.jwt).lastName
+                                        :
+                                        parseJWT(sessionStorage.jwt).name
+                                    }
+                                </h3>
                                 <div style={{ fontSize: '1.25rem', marginLeft: '1rem', display: 'flex' }}>
                                     <MdLocationOn />
                                     <h6 style={{ color: 'gray' }}>Washington, UT</h6>
