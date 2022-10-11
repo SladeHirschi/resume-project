@@ -233,7 +233,7 @@ const Profile: FC = () => {
 
                         <div style={{ flex: 1, minHeight: 0 }}>
                             <div className='d-flex align-items-baseline'>
-                                <h3>Slade Hirschi</h3>
+                                <h3>{parseJWT(sessionStorage.jwt).firstName + " " + parseJWT(sessionStorage.jwt).lastName}</h3>
                                 <div style={{ fontSize: '1.25rem', marginLeft: '1rem', display: 'flex' }}>
                                     <MdLocationOn />
                                     <h6 style={{ color: 'gray' }}>Washington, UT</h6>
@@ -242,7 +242,7 @@ const Profile: FC = () => {
 
                             <h5 style={{ color: 'rgb(33, 188, 240)' }}>Software Developer</h5>
 
-                            <div className='row gx-3 gy-1 col-md-6 mb-5'>
+                            {parseJWT(sessionStorage.jwt).firstName == 'Slade' && <div className='row gx-3 gy-1 col-md-6 mb-5'>
                                 <div className='col-xl-4'>
                                     <button
                                         className='btn btn-primary d-flex align-items-center w-100 fit-content-desktop'
@@ -272,7 +272,7 @@ const Profile: FC = () => {
                                         <span style={{ fontSize: '0.85rem' }} className='ms-2'>View GitHub</span>
                                     </a>
                                 </div>
-                            </div>
+                            </div>}
                         </div>
 
                         <div style={{ flex: 1, minHeight: 0, overflowY: 'scroll' }}>
