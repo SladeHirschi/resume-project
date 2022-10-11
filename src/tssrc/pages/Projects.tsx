@@ -74,6 +74,8 @@ const Projects: FC = () => {
 
     return (
         <div className="w-100 h-100 projects-container">
+            <h3>My Projects</h3>
+            <hr />
             <div className='row g-5'>
                 {projects.map((project, index) => {
                     return (
