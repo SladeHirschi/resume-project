@@ -14,7 +14,6 @@ const SideBar: FC = () => {
 
     const sideBarList: Array<SideBarIcon> = [
         { icon: <MdPersonOutline />, link: '/profile', label: 'Profile' },
-        { icon: <MdListAlt />, link: '/clients', label: 'Clients' },
         { icon: <TbBrandGithub />, link: '/projects', label: 'Projects' },
     ];
 

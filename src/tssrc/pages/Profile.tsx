@@ -11,6 +11,7 @@ import SMSModal from "../components/modals/SMSModal";
 import EmailModal from "../components/modals/EmailModal";
 import defaultFetch from "../helpers/fetch/defaultFetch";
 import parseJWT from "../helpers/fetch/jwt";
+import moment from "moment";
 
 type Info = {
     label: string
@@ -77,12 +78,13 @@ const Profile: FC = () => {
     }, [])
 
     async function onSubmitWorkModal() {
+        console.log("workDataDraft: ", workDataDraft)
         var body: string = 'occupation=' + encodeURIComponent(workDataDraft.occupation);
         body += '&company=' + encodeURIComponent(workDataDraft.company);
         body += '&description=' + encodeURIComponent(workDataDraft.description);
         body += '&startDate=' + encodeURIComponent(workDataDraft.startDate);
         body += '&endDate=' + encodeURIComponent(workDataDraft.endDate ?? '');
-        body += '&isCurrent=' + encodeURIComponent(workDataDraft.current ? 1 : 0);
+        body += '&isCurrent=' + encodeURIComponent(workDataDraft.isCurrent ? 1 : 0);
         body += '&type=' + encodeURIComponent(workDataDraft.type);
         const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/workData?userId=' + parseJWT(sessionStorage.jwt).userId, {
             method: 'POST',
@@ -188,9 +190,12 @@ const Profile: FC = () => {
                                 <div key={index} className='work-data-card'>
                                     <div className='work-data-card-title'>
                                         <div>{data.occupation}</div>
-                                        {data.current && <span className="work-data-card-title-current">Current</span>}
+                                        {data.isCurrent ? <span className="work-data-card-title-current">Current</span> : null}
                                     </div>
                                     <div className='work-data-card-subtitle'>{data.company}</div>
+                                    <div className='work-data-card-date'>
+                                        <span>{moment(data.startDate).format('MMMM Do, YYYY') + ' - ' + (!data.isCurrent ? moment(data.endDate).format('MMMM Do, YYYY') : '(current)')}</span>
+                                    </div>
                                     <div className='work-data-card-body'>{data.description}</div>
                                 </div>
                             );

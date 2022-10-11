@@ -24,7 +24,7 @@ exports.createWorkData = async (req, res) => {
     var company = req.body.company;
     var description = req.body.description;
     var startDate = req.body.startDate;
-    var endDate = req.body.occupation;
+    var endDate = req.body.endDate;
     var isCurrent = req.body.isCurrent;
     var type = req.body.isCurrent;
     var contactInfo = await profile_model.createWorkData({userId, occupation, company, description, startDate, endDate, isCurrent, type});
