@@ -63,3 +63,18 @@ exports.deleteBasicInfo = async (req, res) => {
     await profile_model.deleteBasicInfo(id);
     res.status(200).end()
 }
+
+exports.editContactInfo = async (req, res) => {
+    var id = req.params.id;
+    var label = req.body.label;
+    var value = req.body.value;
+    var hyperlink = req.body.hyperlink;
+    var contactInfo = await profile_model.editContactInfo({id, label, value, hyperlink});
+    res.status(200).json({contactInfo})
+}
+
+exports.deleteContactInfo = async (req, res) => {
+    var id = req.params.id;
+    await profile_model.deleteContactInfo(id);
+    res.status(200).end()
+}

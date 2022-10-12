@@ -31,8 +31,10 @@ router.post('/basicInfo', profile_controller.createBasicInfo)
 router.post('/contactInfo', profile_controller.createContactInfo)
 
 router.put('/basicInfo/:id', profile_controller.editBasicInfo)
+router.put('/contactInfo/:id', profile_controller.editContactInfo)
 
 router.delete('/basicInfo/:id', profile_controller.deleteBasicInfo)
+router.delete('/contactInfo/:id', profile_controller.deleteContactInfo)
 
 
 

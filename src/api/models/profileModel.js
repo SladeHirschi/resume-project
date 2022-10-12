@@ -64,3 +64,13 @@ exports.deleteBasicInfo = async (id) => {
     var result = await query(`DELETE FROM basic_info WHERE id = ?`, [id])
     return true
 }
+
+exports.editContactInfo = async ({id, label, value, hyperlink}) => {
+    var result = await query(`UPDATE contact_info SET label = ?, value = ?, hyperlink = ? WHERE id = ?`, [label, value, hyperlink, id])
+    return true
+}
+
+exports.deleteContactInfo = async (id) => {
+    var result = await query(`DELETE FROM contact_info WHERE id = ?`, [id])
+    return true
+}
