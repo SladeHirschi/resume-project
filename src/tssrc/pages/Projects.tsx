@@ -25,7 +25,7 @@ const Projects: FC = () => {
         {
             name: 'Senior Project',
             link: 'https://github.com/SladeHirschi/senior_project',
-            image: require('../../assets/budgetPlanner.jpeg'),
+            image: require('../../assets/budgetApp.jpeg'),
             description: `
                 This is my senior project made using 
                 React Native and a Golang backend.
