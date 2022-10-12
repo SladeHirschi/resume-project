@@ -2,9 +2,9 @@ const nodemailer = require('nodemailer');
 
 // returns boolean whether sent or not
 exports.sendEmail = function sendEmail(body, sender) {
-    if (sender.length === 0) {
-        return { success: false, message: 'There must be a sender email.' };
-    }
+    // if (sender.length === 0) {
+    //     return { success: false, message: 'There must be a sender email.' };
+    // }
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
