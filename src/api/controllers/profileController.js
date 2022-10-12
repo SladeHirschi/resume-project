@@ -36,8 +36,8 @@ exports.createBasicInfo = async (req, res) => {
     var label = req.body.label;
     var value = req.body.value;
     var hyperlink = req.body.hyperlink;
-    var contactInfo = await profile_model.createBasicInfo({userId, label, value, hyperlink});
-    res.status(200).json({contactInfo})
+    var basicInfo = await profile_model.createBasicInfo({userId, label, value, hyperlink});
+    res.status(200).json({basicInfo})
 }
 
 exports.createContactInfo = async (req, res) => {
@@ -47,4 +47,19 @@ exports.createContactInfo = async (req, res) => {
     var hyperlink = req.body.hyperlink;
     var contactInfo = await profile_model.createContactInfo({userId, label, value, hyperlink});
     res.status(200).json({contactInfo})
+}
+
+exports.editBasicInfo = async (req, res) => {
+    var id = req.params.id;
+    var label = req.body.label;
+    var value = req.body.value;
+    var hyperlink = req.body.hyperlink;
+    var basicInfo = await profile_model.editBasicInfo({id, label, value, hyperlink});
+    res.status(200).json({basicInfo})
+}
+
+exports.deleteBasicInfo = async (req, res) => {
+    var id = req.params.id;
+    await profile_model.deleteBasicInfo(id);
+    res.status(200).end()
 }

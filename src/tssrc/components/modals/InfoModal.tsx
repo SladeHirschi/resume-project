@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 type Info = {
+    id: null | number
     label: string
     value: string
     link: string
@@ -34,6 +35,7 @@ const InfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: ContactInf
                             id="label"
                             placeholder='Name'
                             onChange={(e) => onChangeDraft({ ...draft, label: e.target.value })}
+                            value={draft.label}
                             autoFocus
                         />
                     </div>
@@ -43,6 +45,7 @@ const InfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: ContactInf
                             className="form-control"
                             id="value"
                             placeholder='Linus Torvalds'
+                            value={draft.value}
                             onChange={(e) => onChangeDraft({ ...draft, value: e.target.value })}
                         />
                     </div>
@@ -63,6 +66,7 @@ const InfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: ContactInf
                                 id="value"
                                 placeholder='https://example.com'
                                 onChange={(e) => onChangeDraft({ ...draft, link: e.target.value })}
+                                value={draft.link}
                             />
                         </div>
                     }
