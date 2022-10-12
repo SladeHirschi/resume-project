@@ -71,14 +71,14 @@ body {
 /***************************************/
 /********** Pages Styles ***************/
 
-/********** Projects ***************/
+/********** Login ***************/
 
 
 .login-card {
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 5px;
-    width: 40%;
+    width: 45%;
     padding: 4rem 2rem;
 }
 
@@ -276,6 +276,13 @@ body {
 /***************************************/
 /********** Media Queries Styles ***************/
 
+/* Desktop */
+@media (max-width: 992px) {
+    .login-card{
+        width: 65%
+    }
+}
+
 /* Mobile */
 @media (max-width: 767px) {
     .profile-right-column {
@@ -283,5 +290,8 @@ body {
     }
     .profile-page-container {
         overflow-y: scroll;
+    }
+    .login-card{
+        width: 85%
     }
 }

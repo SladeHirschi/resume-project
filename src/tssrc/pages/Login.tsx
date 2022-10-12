@@ -54,7 +54,7 @@ const Login: FC = () => {
     }
 
     return (
-        <form className='d-flex justify-content-center align-items-center w-100 h-100'>
+        <form className='d-flex justify-content-center align-items-center w-100 h-100 '>
             <div className='login-card'>
                 <div className='login-header'>
                     <img src={require("../../assets/logo.png")} height='64px' width='64px'></img>

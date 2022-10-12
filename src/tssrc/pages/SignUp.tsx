@@ -89,8 +89,8 @@ const SignUp: FC = () => {
                 >
                     {({ errors, touched, setFieldValue, values }) => <Form>
 
-                        <div className='row mb-3'>
-                            <div className="col">
+                        <div className='row mb-3 gy-3'>
+                            <div className="col-sm-6">
                                 <Field
                                     name="firstName"
                                     className={"form-control form-control-lg" + (errors.firstName && touched.firstName ? ' is-invalid' : '')}
@@ -101,7 +101,7 @@ const SignUp: FC = () => {
                                 ) : null}
                             </div>
 
-                            <div className="col">
+                            <div className="col-sm-6">
                                 <Field
                                     name="lastName"
                                     className={"form-control form-control-lg" + (errors.lastName && touched.lastName ? ' is-invalid' : '')}
@@ -114,7 +114,7 @@ const SignUp: FC = () => {
                             </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className='row mb-3 gy-3'>
                             <div className="col">
                                 <Field
                                     name="email"
@@ -128,7 +128,7 @@ const SignUp: FC = () => {
                             </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className='row mb-3 gy-3'>
                             <div className="col">
                                 <Field 
                                     as="input"
@@ -145,8 +145,8 @@ const SignUp: FC = () => {
                             </div>
                         </div>
 
-                        <div className='row mb-3'>
-                            <div className="col">
+                        <div className='row mb-3 gy-3'>
+                            <div className="col-sm-6">
                                 <Field
                                     name="password"
                                     type="password"
@@ -159,7 +159,7 @@ const SignUp: FC = () => {
                                 ) : null}
                             </div>
 
-                            <div className="col">
+                            <div className="col-sm-6">
                                 <Field
                                     name="confirmPassword"
                                     type="password"
