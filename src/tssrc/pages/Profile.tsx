@@ -2,6 +2,7 @@ import { useEffect, useState, FC } from "react";
 import { AiOutlinePlus } from 'react-icons/ai';
 import { MdLocationOn, MdTextsms, MdOutlineEmail } from 'react-icons/md';
 import { TbBrandGithub } from 'react-icons/tb';
+import { HiPencil, HiTrash } from 'react-icons/hi';
 import { NotificationManager } from 'react-notifications';
 
 import { WorkDataType, EmptyWorkData } from "../helpers/types/workDataType";
@@ -14,6 +15,7 @@ import parseJWT from "../helpers/fetch/jwt";
 import moment from "moment";
 
 type Info = {
+    id: null | number
     label: string
     value: string
     link: string
@@ -28,8 +30,8 @@ const Profile: FC = () => {
     const [SMSMessage, setSMSMessage] = useState<string>('');
     const [emailDraft, setEmailDraft] = useState<{ body: string, sender: string }>({ body: '', sender: '' });
     const [workDataDraft, setWorkDataDraft] = useState<WorkDataType>(EmptyWorkData);
-    const [basicInfoDraft, setBasicInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
-    const [contactInfoDraft, setContactInfoDraft] = useState<Info>({ label: '', value: '', link: '' });
+    const [basicInfoDraft, setBasicInfoDraft] = useState<Info>({ id: null, label: '', value: '', link: '' });
+    const [contactInfoDraft, setContactInfoDraft] = useState<Info>({ id: null, label: '', value: '', link: '' });
 
     const [showSMSModal, setShowSMSModal] = useState<boolean>(false);
     const [showEmailModal, setShowEmailModal] = useState<boolean>(false);
@@ -43,7 +45,7 @@ const Profile: FC = () => {
         getData();
     }, [])
 
-    function getData(): void {
+    async function getData() {
         setLoading(true);
         const getWorkData = async (): Promise<void> => {
             const response: any = await defaultFetch(process.env.REACT_APP_BASE_URL + '/getWorkData?userId=' + parseJWT(sessionStorage.jwt).userId, {
@@ -78,14 +80,25 @@ const Profile: FC = () => {
             setContactInfo(contactInfoResponse.contactInfo)
         }
 
-        getWorkData();
-        getBasicInfo();
-        getContactInfo();
-        setLoading(false);
+        await getWorkData();
+        await getBasicInfo();
+        await getContactInfo();
+        await setLoading(false);
     }
 
     async function onSubmitWorkModal() {
+        if (workDataDraft.id) {
+            await editWorkData();
+        } else {
+            await createWorkData()
+        }
         setLoading(true);
+        setWorkDataDraft(EmptyWorkData);
+        setShowWorkDataModal(false);
+        await getData();
+    }
+
+    async function createWorkData() {
         var body: string = 'occupation=' + encodeURIComponent(workDataDraft.occupation);
         body += '&company=' + encodeURIComponent(workDataDraft.company);
         body += '&description=' + encodeURIComponent(workDataDraft.description);
@@ -100,14 +113,39 @@ const Profile: FC = () => {
             },
             body: body
         })
-        setWorkDataDraft(EmptyWorkData);
-        setShowWorkDataModal(false);
-        getData();
-        NotificationManager.success("Work Info Added successfully.", "Success", 3000);
+    }
+
+    async function editWorkData() {
+        var body: string = 'occupation=' + encodeURIComponent(workDataDraft.occupation);
+        body += '&company=' + encodeURIComponent(workDataDraft.company);
+        body += '&description=' + encodeURIComponent(workDataDraft.description);
+        body += '&startDate=' + encodeURIComponent(workDataDraft.startDate);
+        body += '&endDate=' + encodeURIComponent(workDataDraft.endDate ?? '');
+        body += '&isCurrent=' + encodeURIComponent(workDataDraft.isCurrent ? 1 : 0);
+        body += '&type=' + encodeURIComponent(workDataDraft.type);
+        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/workData/' + workDataDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        })
+        NotificationManager.success("Work Data updated successfully.", "Success", 3000);
     }
 
     async function onSubmitContactInfoModal() {
         setLoading(true);
+        if (contactInfoDraft.id) {
+            await editContactInfo();
+        } else {
+            await createContactInfo();
+        }
+        setContactInfoDraft({ id: null, label: '', value: '', link: '' });
+        setShowContactInfoModal(false);
+        await getData();
+    }
+
+    async function createContactInfo() {
         var body: string = 'label=' + encodeURIComponent(contactInfoDraft.label);
         body += '&value=' + encodeURIComponent(contactInfoDraft.value);
         body += '&hyperlink=' + encodeURIComponent(contactInfoDraft.link);
@@ -118,14 +156,36 @@ const Profile: FC = () => {
             },
             body: body
         })
-        setContactInfoDraft({ label: '', value: '', link: '' });
-        setShowContactInfoModal(false);
-        getData();
         NotificationManager.success("Contact Info Added successfully.", "Success", 3000);
+    }
+
+    async function editContactInfo() {
+        var body: string = 'label=' + encodeURIComponent(contactInfoDraft.label);
+        body += '&value=' + encodeURIComponent(contactInfoDraft.value);
+        body += '&hyperlink=' + encodeURIComponent(contactInfoDraft.link);
+        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/contactInfo/' + contactInfoDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        })
+        NotificationManager.success("Contact Info updated successfully.", "Success", 3000);
     }
 
     async function onSubmitBasicInfoModal() {
         setLoading(true);
+        if (basicInfoDraft.id) {
+            await editBasicInfo();
+        } else {
+            await createBasicInfo();
+        }
+        setBasicInfoDraft({ id: null, label: '', value: '', link: '' });
+        setShowBasicInfoModal(false);
+        await getData();
+    }
+
+    async function createBasicInfo() {
         var body: string = 'label=' + encodeURIComponent(basicInfoDraft.label);
         body += '&value=' + encodeURIComponent(basicInfoDraft.value);
         body += '&hyperlink=' + encodeURIComponent(basicInfoDraft.link);
@@ -136,10 +196,21 @@ const Profile: FC = () => {
             },
             body: body
         })
-        setBasicInfoDraft({ label: '', value: '', link: '' });
-        setShowBasicInfoModal(false);
-        getData();
         NotificationManager.success("Basic Info Added successfully.", "Success", 3000);
+    }
+
+    async function editBasicInfo() {
+        var body: string = 'label=' + encodeURIComponent(basicInfoDraft.label);
+        body += '&value=' + encodeURIComponent(basicInfoDraft.value);
+        body += '&hyperlink=' + encodeURIComponent(basicInfoDraft.link);
+        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/basicInfo/' + basicInfoDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        })
+        NotificationManager.success("Basic Info updated successfully.", "Success", 3000);
     }
 
     async function onSubmitSMSModal() {
@@ -182,6 +253,54 @@ const Profile: FC = () => {
         }
     }
 
+    async function deleteBasicInfo(basicInfoId: number) {
+        setLoading(true);
+        try {
+            const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/basicInfo/' + basicInfoId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            });
+            await getData();
+            NotificationManager.success("Basic Info deleted successfully", "Success", 3000);
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    async function deleteContactInfo(contactInfoId: number) {
+        setLoading(true);
+        try {
+            const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/contactInfo/' + contactInfoId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            });
+            await getData();
+            NotificationManager.success("Contact Info deleted successfully", "Success", 3000);
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    async function deleteWorkData(workDataId: number) {
+        setLoading(true);
+        try {
+            const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/workData/' + workDataId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            });
+            await getData();
+            NotificationManager.success("Work Data deleted successfully", "Success", 3000);
+        } catch (e) {
+            alert(e);
+        }
+    }
+
     if (loading) {
         return (
             <div className='w-100 h-100 d-flex justify-content-center align-items-center'>
@@ -212,6 +331,10 @@ const Profile: FC = () => {
                         {workData.map((data, index) => {
                             return (
                                 <div key={index} className='work-data-card'>
+                                    <div className="ms-2 d-flex">
+                                        <HiPencil size={25} onClick={() => { setShowWorkDataModal(true); setWorkDataDraft(data) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                        <HiTrash size={25} onClick={() => deleteWorkData(data.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                    </div>
                                     <div className='work-data-card-title'>
                                         <div>{data.occupation}</div>
                                         {data.isCurrent ? <span className="work-data-card-title-current">Current</span> : null}
@@ -234,11 +357,11 @@ const Profile: FC = () => {
                         <div style={{ flex: 1, minHeight: 0 }}>
                             <div className='d-flex align-items-baseline'>
                                 <h3>{
-                                    parseJWT(sessionStorage.jwt).firstName != undefined ? 
+                                    parseJWT(sessionStorage.jwt).firstName != undefined ?
                                         parseJWT(sessionStorage.jwt).firstName + " " + parseJWT(sessionStorage.jwt).lastName
                                         :
                                         parseJWT(sessionStorage.jwt).name
-                                    }
+                                }
                                 </h3>
                                 <div style={{ fontSize: '1.25rem', marginLeft: '1rem', display: 'flex' }}>
                                     <MdLocationOn />
@@ -299,13 +422,19 @@ const Profile: FC = () => {
                                     return (
                                         <div key={index} className={'d-flex justify-content-between col-md-6'}>
                                             <span className='col-md-4'>{item.label}</span>
-                                            <span className='col-md-8'>
-                                                {item.link?.length > 0 ?
-                                                    <a href={item.link} target="_blank" rel="noreferrer">{item.value}</a>
-                                                    :
-                                                    item.value
-                                                }
-                                            </span>
+                                            <div className="d-flex flex-fill align-items-center">
+                                                <span className='col-md-8'>
+                                                    {item.link?.length > 0 ?
+                                                        <a href={item.link} target="_blank" rel="noreferrer">{item.value}</a>
+                                                        :
+                                                        item.value
+                                                    }
+                                                </span>
+                                                <div className="ms-2 d-flex">
+                                                    <HiPencil size={20} onClick={() => { setShowContactInfoModal(true); setContactInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiTrash size={20} onClick={() => deleteContactInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                </div>
+                                            </div>
                                         </div>
                                     );
                                 })}
@@ -330,13 +459,19 @@ const Profile: FC = () => {
                                     return (
                                         <div key={index} className={'d-flex justify-content-between col-md-6'}>
                                             <span className='col-md-4'>{item.label}</span>
-                                            <span className='col-md-8'>
-                                                {item.link?.length > 0 ?
-                                                    <a href={item.link} target="_blank" rel="noreferrer">{item.value}</a>
-                                                    :
-                                                    item.value
-                                                }
-                                            </span>
+                                            <div className="d-flex flex-fill align-items-center">
+                                                <span className='col-md-8'>
+                                                    {item.link?.length > 0 ?
+                                                        <a href={item.link} target="_blank" rel="noreferrer">{item.value}</a>
+                                                        :
+                                                        item.value
+                                                    }
+                                                </span>
+                                                <div className="ms-2 d-flex">
+                                                    <HiPencil size={20} onClick={() => { setShowBasicInfoModal(true); setBasicInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiTrash size={20} onClick={() => deleteBasicInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                </div>
+                                            </div>
                                         </div>
                                     );
                                 })}
@@ -357,7 +492,7 @@ const Profile: FC = () => {
             <InfoModal
                 draft={contactInfoDraft}
                 onChangeDraft={setContactInfoDraft}
-                onClose={() => { setShowContactInfoModal(false); setContactInfoDraft({ label: '', value: '', link: '' }) }}
+                onClose={() => { setShowContactInfoModal(false); setContactInfoDraft({ id: null, label: '', value: '', link: '' }) }}
                 show={showContactInfoModal}
                 onSubmit={onSubmitContactInfoModal}
             />
@@ -365,7 +500,7 @@ const Profile: FC = () => {
             <InfoModal
                 draft={basicInfoDraft}
                 onChangeDraft={setBasicInfoDraft}
-                onClose={() => { setShowBasicInfoModal(false); setContactInfoDraft({ label: '', value: '', link: '' }) }}
+                onClose={() => { setShowBasicInfoModal(false); setBasicInfoDraft({ id: null, label: '', value: '', link: '' }) }}
                 show={showBasicInfoModal}
                 onSubmit={onSubmitBasicInfoModal}
             />

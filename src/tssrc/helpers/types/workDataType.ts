@@ -1,6 +1,7 @@
 import moment from "moment";
 
 export type WorkDataType = {
+    id: null | number;
     occupation: string;
     company: string;
     description: string;
@@ -11,6 +12,7 @@ export type WorkDataType = {
 }
 
 export const EmptyWorkData: WorkDataType = {
+    id: null,
     occupation: '',
     company: '',
     description: '',

@@ -30,4 +30,14 @@ router.post('/workData', profile_controller.createWorkData)
 router.post('/basicInfo', profile_controller.createBasicInfo)
 router.post('/contactInfo', profile_controller.createContactInfo)
 
+router.put('/workData/:id', profile_controller.editWorkData)
+router.put('/basicInfo/:id', profile_controller.editBasicInfo)
+router.put('/contactInfo/:id', profile_controller.editContactInfo)
+
+router.delete('/workData/:id', profile_controller.deleteWorkData)
+router.delete('/basicInfo/:id', profile_controller.deleteBasicInfo)
+router.delete('/contactInfo/:id', profile_controller.deleteContactInfo)
+
+
+
 module.exports = router
