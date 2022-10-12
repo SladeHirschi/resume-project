@@ -87,7 +87,18 @@ const Profile: FC = () => {
     }
 
     async function onSubmitWorkModal() {
+        if (workDataDraft.id) {
+            await editWorkData();
+        } else {
+            await createWorkData()
+        }
         setLoading(true);
+        setWorkDataDraft(EmptyWorkData);
+        setShowWorkDataModal(false);
+        await getData();
+    }
+
+    async function createWorkData() {
         var body: string = 'occupation=' + encodeURIComponent(workDataDraft.occupation);
         body += '&company=' + encodeURIComponent(workDataDraft.company);
         body += '&description=' + encodeURIComponent(workDataDraft.description);
@@ -102,10 +113,24 @@ const Profile: FC = () => {
             },
             body: body
         })
-        setWorkDataDraft(EmptyWorkData);
-        setShowWorkDataModal(false);
-        getData();
-        NotificationManager.success("Work Info Added successfully.", "Success", 3000);
+    }
+
+    async function editWorkData() {
+        var body: string = 'occupation=' + encodeURIComponent(workDataDraft.occupation);
+        body += '&company=' + encodeURIComponent(workDataDraft.company);
+        body += '&description=' + encodeURIComponent(workDataDraft.description);
+        body += '&startDate=' + encodeURIComponent(workDataDraft.startDate);
+        body += '&endDate=' + encodeURIComponent(workDataDraft.endDate ?? '');
+        body += '&isCurrent=' + encodeURIComponent(workDataDraft.isCurrent ? 1 : 0);
+        body += '&type=' + encodeURIComponent(workDataDraft.type);
+        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/workData/' + workDataDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: body
+        })
+        NotificationManager.success("Work Data updated successfully.", "Success", 3000);
     }
 
     async function onSubmitContactInfoModal() {
@@ -260,6 +285,22 @@ const Profile: FC = () => {
         }
     }
 
+    async function deleteWorkData(workDataId: number) {
+        setLoading(true);
+        try {
+            const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/workData/' + workDataId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            });
+            await getData();
+            NotificationManager.success("Work Data deleted successfully", "Success", 3000);
+        } catch (e) {
+            alert(e);
+        }
+    }
+
     if (loading) {
         return (
             <div className='w-100 h-100 d-flex justify-content-center align-items-center'>
@@ -290,6 +331,10 @@ const Profile: FC = () => {
                         {workData.map((data, index) => {
                             return (
                                 <div key={index} className='work-data-card'>
+                                    <div className="ms-2 d-flex">
+                                        <HiPencil size={25} onClick={() => { setShowWorkDataModal(true); setWorkDataDraft(data) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                        <HiTrash size={25} onClick={() => deleteWorkData(data.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                    </div>
                                     <div className='work-data-card-title'>
                                         <div>{data.occupation}</div>
                                         {data.isCurrent ? <span className="work-data-card-title-current">Current</span> : null}
@@ -386,8 +431,8 @@ const Profile: FC = () => {
                                                     }
                                                 </span>
                                                 <div className="ms-2 d-flex">
-                                                    <HiPencil onClick={() => { setShowContactInfoModal(true); setContactInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
-                                                    <HiTrash onClick={() => deleteContactInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiPencil size={20} onClick={() => { setShowContactInfoModal(true); setContactInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiTrash size={20} onClick={() => deleteContactInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -423,8 +468,8 @@ const Profile: FC = () => {
                                                     }
                                                 </span>
                                                 <div className="ms-2 d-flex">
-                                                    <HiPencil onClick={() => { setShowBasicInfoModal(true); setBasicInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
-                                                    <HiTrash onClick={() => deleteBasicInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiPencil size={20} onClick={() => { setShowBasicInfoModal(true); setBasicInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiTrash size={20} onClick={() => deleteBasicInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
                                                 </div>
                                             </div>
                                         </div>

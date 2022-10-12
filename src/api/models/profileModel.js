@@ -11,10 +11,11 @@ exports.getWorkData = async (userId) => {
             description, 
             start_date as startDate, 
             end_date as endDate, 
-            is_current AS isCurrent, 
+            is_current, 
             type 
         FROM work_data 
         WHERE user_id = ?`, [userId]);
+    result.map(res => {res.isCurrent = res.is_current == 1})
     return result;
 }
 
@@ -72,5 +73,25 @@ exports.editContactInfo = async ({id, label, value, hyperlink}) => {
 
 exports.deleteContactInfo = async (id) => {
     var result = await query(`DELETE FROM contact_info WHERE id = ?`, [id])
+    return true
+}
+
+exports.editWorkData = async ({id, occupation, company, description, startDate, endDate, isCurrent, type}) => {
+    var result = await query(`
+        UPDATE work_data 
+        SET 
+            occupation = ?, 
+            company = ?, 
+            description = ?,
+            start_date = ?,
+            end_date = ?,
+            is_current = ?, 
+            type = ?
+        WHERE id = ?`, [occupation, company, description, startDate, endDate, isCurrent, type, id])
+    return true
+}
+
+exports.deleteWorkData = async (id) => {
+    var result = await query(`DELETE FROM work_data WHERE id = ?`, [id])
     return true
 }

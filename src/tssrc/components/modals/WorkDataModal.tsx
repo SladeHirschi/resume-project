@@ -43,6 +43,7 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
                             id="occupation"
                             placeholder='Software Engineer'
                             onChange={(e) => onChangeDraft({ ...draft, occupation: e.target.value })}
+                            value={draft.occupation}
                         />
                     </div>
                     <div className='col-md-6'>
@@ -52,6 +53,7 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
                             id="company"
                             placeholder='Amazon'
                             onChange={(e) => onChangeDraft({ ...draft, company: e.target.value })}
+                            value={draft.company}
                         />
                     </div>
                 </div>
@@ -66,6 +68,7 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
                         rows={3}
                         placeholder='Made the coolest app in the world...'
                         onChange={(e) => onChangeDraft({ ...draft, description: e.target.value })}
+                        value={draft.description}
                     />
                 </div>
 

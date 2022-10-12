@@ -78,3 +78,22 @@ exports.deleteContactInfo = async (req, res) => {
     await profile_model.deleteContactInfo(id);
     res.status(200).end()
 }
+
+exports.editWorkData = async (req, res) => {
+    var id = req.params.id;
+    var occupation = req.body.occupation;
+    var company = req.body.company;
+    var description = req.body.description;
+    var startDate = req.body.startDate;
+    var endDate = req.body.endDate;
+    var isCurrent = req.body.isCurrent;
+    var type = req.body.type;
+    var workData = await profile_model.editWorkData({id, occupation, company, description, startDate, endDate, isCurrent, type});
+    res.status(200).json({workData})
+}
+
+exports.deleteWorkData = async (req, res) => {
+    var id = req.params.id;
+    await profile_model.deleteWorkData(id);
+    res.status(200).end()
+}
