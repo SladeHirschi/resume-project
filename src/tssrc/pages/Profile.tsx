@@ -254,7 +254,7 @@ const Profile: FC = () => {
                 },
             });
             await getData();
-            NotificationManager.success("Basic Info deleted successfully", "Success", 3000);
+            NotificationManager.success("Contact Info deleted successfully", "Success", 3000);
         } catch (e) {
             alert(e);
         }
