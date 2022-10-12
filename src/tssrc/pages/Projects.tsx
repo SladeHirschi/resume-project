@@ -1,4 +1,5 @@
 import { useEffect, useState, FC } from "react";
+import { Overlay, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 type Project = {
     name: string;
@@ -13,59 +14,69 @@ const Projects: FC = () => {
 
     const fakeProjectsData: Array<Project> = [
         {
-            name: 'AI',
+            name: 'Artificial Intelligence',
             link: 'https://github.com/SladeHirschi/empire-agent',
-            image: '../../assets/logo.png',
-            description: 'This was an AI project for school '
+            image: require('../../assets/actionpy.png'),
+            description: `
+                This is a project that I made in an AI setting, 
+                the intent was for an agent to establish itself
+                in a game called wolfpack empire `
         },
         {
-            name: 'AI',
-            link: 'https://github.com/SladeHirschi/empire-agent',
-            image: '../../assets/logo.png',
-            description: 'This was an AI project for school '
+            name: 'Senior Project',
+            link: 'https://github.com/SladeHirschi/senior_project',
+            image: require('../../assets/budgetPlanner.jpeg'),
+            description: `
+                This is my senior project made using 
+                React Native and a Golang backend.
+                The project was for users to keep 
+                track of their spending`
         },
         {
-            name: 'AI',
-            link: 'https://github.com/SladeHirschi/empire-agent',
-            image: '../../assets/logo.png',
-            description: 'This was an AI project for school '
+            name: 'C++ Complex Fractals',
+            link: 'https://github.com/SladeHirschi/OpenGLFractal',
+            image: require('../../assets/fractal.png'),
+            description: `
+                This is my first c++ project using OOP,
+                classes and inheritance to set pixels
+                on an image to create fractal images`
         },
         {
-            name: 'AI',
-            link: 'https://github.com/SladeHirschi/empire-agent',
-            image: '../../assets/logo.png',
-            description: 'This was an AI project for school '
+            name: 'Python Server',
+            link: 'https://github.com/SladeHirschi/PythonServer',
+            image: require('../../assets/pythonServer.png'),
+            description: `
+                My first ever web server, written in
+                python with a very minimal javascript
+                frontend. We learned how to organize
+                a server to handle requests and store sessions`
         },
         {
-            name: 'AI',
-            link: 'https://github.com/SladeHirschi/empire-agent',
-            image: '../../assets/logo.png',
-            description: 'This was an AI project for school '
+            name: 'Costco Database',
+            link: 'https://github.com/SladeHirschi/databases-final',
+            image: require('../../assets/githubIcon.png'),
+            description: `
+                This is an example of a multi table SQL
+                database with foreign keys and constraints
+                to connect data and keep it consistent`
         },
         {
-            name: 'AI',
-            link: 'https://github.com/SladeHirschi/empire-agent',
-            image: '../../assets/logo.png',
-            description: 'This was an AI project for school '
+            name: 'InstaBook',
+            link: 'https://github.com/SladeHirschi',
+            image: require('../../assets/instabook.png'),
+            description: `
+                This is my social media Instagram/Facebook
+                clone made using Swift (still in progress no Repo)`
         },
         {
-            name: 'AI',
-            link: 'https://github.com/SladeHirschi/empire-agent',
-            image: '../../assets/logo.png',
-            description: 'This was an AI project for school '
-        },
-        {
-            name: 'AI',
-            link: 'https://github.com/SladeHirschi/empire-agent',
-            image: '../../assets/logo.png',
-            description: 'This was an AI project for school '
-        },
-        {
-            name: 'AI',
-            link: 'https://github.com/SladeHirschi/empire-agent',
-            image: '../../assets/logo.png',
-            description: 'This was an AI project for school '
-        },
+            name: 'Kotlin API App',
+            link: 'https://github.com/SladeHirschi',
+            image: require('../../assets/kotlinAPI.png'),
+            description: `
+                This is a project written in Kotlin using 
+                recycler views and a Brawl Starts API to display
+                information in a list to users.`
+        }
     ];
 
     useEffect(() => {
@@ -76,17 +87,26 @@ const Projects: FC = () => {
         <div className="w-100 h-100 projects-container">
             <h3>My Projects</h3>
             <hr />
-            <div className='row g-5'>
+            <div className='projects-grid'>
                 {projects.map((project, index) => {
                     return (
-                        <div key={index} className='col-md-3'>
-                            <a className="card card-box-shadow no-styles" href={project.link} target="_blank">
-                                <img className="card-img-top border" src={require('../../assets/actionpy.png')} alt="Project Image" />
-                                <div className="card-body">
-                                    <h5 className="card-title">{project.name}</h5>
-                                    <p className="card-text">{project.description}</p>
-                                </div>
-                            </a>
+                        <div key={index} style={{ height: '100%', overflow: 'hidden' }}>
+                            <OverlayTrigger
+                                key={index}
+                                placement={'top'}
+                                overlay={
+                                    <Tooltip>
+                                        {project.description}
+                                    </Tooltip>
+                                }
+                            >
+                                <a className="card card-box-shadow no-styles" href={project.link} target="_blank">
+                                    <img className="card-img-top border" src={project.image} alt="Project Image" height={220} />
+                                    <div className="card-body">
+                                        <h5 className="card-title">{project.name}</h5>
+                                    </div>
+                                </a>
+                            </OverlayTrigger>
                         </div>
                     );
                 })}

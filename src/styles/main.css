@@ -99,6 +99,12 @@ body {
     padding: 1.5rem;
     overflow-y: scroll;
 }
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+    grid-auto-rows: 20rem
+}
 .card-box-shadow {
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
