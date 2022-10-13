@@ -29,7 +29,7 @@ exports.getContactInfo = async (userId) => {
     return  result;
 }
 
-exports.createWorkData = async ({userId, occupation, company, description, startDate, endDate, isCurrent, type}) => {
+exports.createWorkData = async (userId, occupation, company, description, startDate, endDate, isCurrent, type) => {
     var result = await query(`
         INSERT INTO work_data 
             (user_id, occupation, company, description, start_date, end_date, is_current, type) 
@@ -38,7 +38,7 @@ exports.createWorkData = async ({userId, occupation, company, description, start
     return result.insertId
 }
 
-exports.createBasicInfo = async ({userId, label, value, hyperlink}) => {
+exports.createBasicInfo = async (userId, label, value, hyperlink) => {
     var result = await query(`
         INSERT INTO basic_info 
             (user_id, label, value, hyperlink) 
@@ -47,7 +47,7 @@ exports.createBasicInfo = async ({userId, label, value, hyperlink}) => {
     return result.insertId
 }
 
-exports.createContactInfo = async ({userId, label, value, hyperlink}) => {
+exports.createContactInfo = async (userId, label, value, hyperlink) => {
     var result = await query(`
         INSERT INTO contact_info 
             (user_id, label, value, hyperlink) 
@@ -56,7 +56,7 @@ exports.createContactInfo = async ({userId, label, value, hyperlink}) => {
     return result.insertId
 }
 
-exports.editBasicInfo = async ({id, label, value, hyperlink}) => {
+exports.editBasicInfo = async (id, label, value, hyperlink) => {
     var result = await query(`UPDATE basic_info SET label = ?, value = ?, hyperlink = ? WHERE id = ?`, [label, value, hyperlink, id])
     return true
 }
@@ -66,7 +66,7 @@ exports.deleteBasicInfo = async (id) => {
     return true
 }
 
-exports.editContactInfo = async ({id, label, value, hyperlink}) => {
+exports.editContactInfo = async (id, label, value, hyperlink) => {
     var result = await query(`UPDATE contact_info SET label = ?, value = ?, hyperlink = ? WHERE id = ?`, [label, value, hyperlink, id])
     return true
 }
@@ -76,7 +76,7 @@ exports.deleteContactInfo = async (id) => {
     return true
 }
 
-exports.editWorkData = async ({id, occupation, company, description, startDate, endDate, isCurrent, type}) => {
+exports.editWorkData = async (id, occupation, company, description, startDate, endDate, isCurrent, type) => {
     var result = await query(`
         UPDATE work_data 
         SET 

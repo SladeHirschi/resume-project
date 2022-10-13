@@ -3,6 +3,7 @@ const router = express.Router()
 const email_controller = require('../controllers/emailController');
 const twilio_controller = require('../controllers/twilioController');
 const profile_controller = require('../controllers/profileController');
+const lightcast_controller = require('../controllers/lightcastController');
 const auth_model = require('../models/authModel');
 
 // middleware that is specific to this router
@@ -38,6 +39,8 @@ router.delete('/workData/:id', profile_controller.deleteWorkData)
 router.delete('/basicInfo/:id', profile_controller.deleteBasicInfo)
 router.delete('/contactInfo/:id', profile_controller.deleteContactInfo)
 
-
+router.get('/skills', lightcast_controller.getSkills)
+router.get('/categories', lightcast_controller.getCategories)
+router.post('/skills', lightcast_controller.createSkill)
 
 module.exports = router
