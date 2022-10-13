@@ -18,3 +18,9 @@ exports.createSkill = async (req, res) => {
     lightcast_model.createSkill(userId, label, value);
     res.status(201).end();
 }
+
+exports.createCategory = async (req, res) => {
+    var name = req.body.name;
+    lightcast_model.createCategory(name);
+    res.status(201).end();
+}

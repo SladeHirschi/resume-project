@@ -55,11 +55,15 @@ exports.getSkills = async () => {
 }
 
 exports.getCategories = async (userId) => {
-    var result = await query(`SELECT * FROM categories WHERE user_id = ?`, [userId]);
+    var result = await query(`SELECT * FROM categories JOIN skills ON skills.category_id = categories.id WHERE user_id = ?`, [userId]);
     return result
 }
 
 
 exports.createSkill = async (userId, label, value) => {
     await query(`INSERT INTO skills (user_id, label, value) VALUES (?, ?, ?)`, [userId, label, value]);
+}
+
+exports.createCategory = async (name) => {
+    await query(`INSERT INTO categories (name) VALUES (?)`, [name]);
 }
