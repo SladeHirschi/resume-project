@@ -55,15 +55,39 @@ exports.getSkills = async () => {
 }
 
 exports.getCategories = async (userId) => {
-    var result = await query(`SELECT * FROM categories JOIN skills ON skills.category_id = categories.id WHERE user_id = ?`, [userId]);
-    return result
+    var result = await query(`
+        SELECT 
+            JSON_ARRAYAGG(JSON_OBJECT('id', c.id, 'name', c.name, 'skills', s.skills)) AS categories
+        FROM categories c 
+        LEFT JOIN (
+            SELECT
+                category_id, 
+                JSON_ARRAYAGG(JSON_OBJECT('id', id, 'label', label, 'value', value)) skills 
+            FROM skills
+            GROUP BY category_id
+        ) s ON s.category_id = c.id
+        WHERE c.user_id = ?`, [userId]);
+    var categories = result[0].categories;
+    return JSON.parse(categories)
 }
 
 
-exports.createSkill = async (userId, label, value) => {
-    await query(`INSERT INTO skills (user_id, label, value) VALUES (?, ?, ?)`, [userId, label, value]);
+exports.createSkill = async (userId, label, value, categoryId) => {
+    await query(`INSERT INTO skills (user_id, label, value, category_id) VALUES (?, ?, ?, ?)`, [userId, label, value, categoryId]);
 }
 
-exports.createCategory = async (name) => {
-    await query(`INSERT INTO categories (name) VALUES (?)`, [name]);
+exports.createCategory = async (name, userId) => {
+    await query(`INSERT INTO categories (name, user_id) VALUES (?, ?)`, [name, userId]);
+}
+
+exports.updateSkill = async (id, label, value) => {
+    await query(`UPDATE skills SET label = ?, value = ? WHERE id = ?`, [label, value, id]);
+}
+
+exports.deleteSkill = async (id) => {
+    await query(`DELETE FROM skills WHERE id = ?`, [id]);
+}
+
+exports.deleteCategory = async (id) => {
+    await query(`DELETE FROM categories WHERE id = ?`, [id]);
 }

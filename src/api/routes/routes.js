@@ -41,7 +41,13 @@ router.delete('/contactInfo/:id', profile_controller.deleteContactInfo)
 
 router.get('/skills', lightcast_controller.getSkills)
 router.get('/categories', lightcast_controller.getCategories)
+
 router.post('/skills', lightcast_controller.createSkill)
 router.post('/categories', lightcast_controller.createCategory)
+
+router.put('/skills/:id', lightcast_controller.updateSkill)
+
+router.delete('/skills/:id', lightcast_controller.deleteSkill)
+router.delete('/categories/:id', lightcast_controller.deleteCategory)
 
 module.exports = router
