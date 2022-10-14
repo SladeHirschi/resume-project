@@ -314,7 +314,7 @@ const Profile: FC = () => {
             <div className='row h-100'>
                 <div className='col-md-4 profile-left-column'>
                     <div className='profile-image-container'>
-                        <img src={require('../../assets/logo.png')} width='212px' height='212px' alt="Me" />
+                        <img src={require('../../assets/slade.jpeg')} width='85%' height='85%' alt="Me" style={{borderRadius: 2}} />
                     </div>
 
                     <div className='profile-work-container'>

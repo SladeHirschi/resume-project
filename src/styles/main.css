@@ -12,18 +12,22 @@
     --blue-color: #76d4fc;
     --blue-text-color: #024d70;
 }
+
 /********** Main Styles ***************/
 html * {
     font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 }
+
 body {
     margin: 0px;
     /* padding-top: var(--header-height); */
 }
+
 #root {
     height: 100vh;
     width: 100vw;
 }
+
 .header {
     position: fixed;
     height: var(--header-height);
@@ -32,10 +36,12 @@ body {
     width: 100%;
     z-index: 3;
 }
-.header-home:hover{
+
+.header-home:hover {
     transform: scale(1.1);
     cursor: pointer;
 }
+
 .side-bar {
     height: 100%;
     overflow-x: hidden;
@@ -45,24 +51,28 @@ body {
     width: var(--side-bar-width);
     margin-top: var(--header-height);
 }
+
 .content {
     margin-top: var(--header-height);
     margin-left: var(--side-bar-width);
     width: 100%;
     height: calc(100% - var(--header-height));
 }
+
 .side-bar-item {
     display: flex;
     justify-content: space-between;
-    align-items: center; 
+    align-items: center;
     font-size: 2rem;
     padding: 0.25rem 0.5rem;
     transition: all .2s ease-in-out;
 }
-.side-bar-item:hover{
+
+.side-bar-item:hover {
     transform: scale(1.2);
     cursor: pointer;
 }
+
 .no-styles {
     text-decoration: none;
     color: black;
@@ -99,17 +109,44 @@ body {
     padding: 1.5rem;
     overflow-y: scroll;
 }
+
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 2rem;
     grid-auto-rows: 20rem
 }
+
 .card-box-shadow {
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
+
 .card-box-shadow:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+/********** Skills ***************/
+.skills-container {
+    padding: 1.5rem;
+    overflow-y: scroll;
+}
+
+.List {
+    border: 1px solid #d9dddd;
+}
+
+.ListItemEven,
+.ListItemOdd {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ListItemEven {
+    background-color: #f8f8f0;
+}
+.selected-card {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -120,43 +157,51 @@ body {
     width: 100%;
     overflow: hidden;
 }
+
 .profile-left-column {
     overflow-y: scroll;
     height: 100%;
 }
+
 .profile-image-container {
     padding: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .profile-work-container {
     display: flex;
     flex-direction: column;
     padding-top: 1rem;
 }
+
 .divider {
-    width: 100%; 
-    height: 20px; 
-    border-bottom: 1px solid black; 
+    width: 100%;
+    height: 20px;
+    border-bottom: 1px solid black;
     text-align: center;
 }
+
 .divider-text {
-    background-color: #ffffff; 
+    background-color: #ffffff;
     padding: 0 5px;
 }
+
 .separator {
     display: flex;
     align-items: center;
     text-align: center;
     color: #919191
 }
+
 .separator::before,
 .separator::after {
     content: '';
     flex: 1;
     border-bottom: 1px solid rgb(117, 117, 117);
 }
+
 .separator:not(:empty)::before {
     margin-right: .25em;
 }
@@ -164,16 +209,19 @@ body {
 .separator:not(:empty)::after {
     margin-left: .25em;
 }
+
 .work-data-card {
     padding: 1rem;
     flex: 1;
 }
+
 .work-data-card-title {
     font-size: 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .work-data-card-title-current {
     font-size: 1rem;
     font-weight: 600;
@@ -185,69 +233,71 @@ body {
     align-items: center;
     justify-content: center;
 }
+
 .work-data-card-subtitle {
     padding-bottom: 1rem;
     text-decoration: underline;
 }
+
 .contact-info-header {
     width: 100%
 }
 
 .spinner {
-   width: 56px;
-   height: 56px;
-   border-radius: 50%;
-   border: 9px solid #76d4fc;
-   animation: spinner-bulqg1 0.8s infinite linear alternate,
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 9px solid #76d4fc;
+    animation: spinner-bulqg1 0.8s infinite linear alternate,
         spinner-oaa3wk 1.6s infinite linear;
 }
 
 @keyframes spinner-bulqg1 {
-   0% {
-      clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
-   }
+    0% {
+        clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+    }
 
-   12.5% {
-      clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
-   }
+    12.5% {
+        clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
+    }
 
-   25% {
-      clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%);
-   }
+    25% {
+        clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%);
+    }
 
-   50% {
-      clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
-   }
+    50% {
+        clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+    }
 
-   62.5% {
-      clip-path: polygon(50% 50%, 100% 0, 100% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
-   }
+    62.5% {
+        clip-path: polygon(50% 50%, 100% 0, 100% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+    }
 
-   75% {
-      clip-path: polygon(50% 50%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 50% 100%, 0% 100%);
-   }
+    75% {
+        clip-path: polygon(50% 50%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 50% 100%, 0% 100%);
+    }
 
-   100% {
-      clip-path: polygon(50% 50%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 0% 100%);
-   }
+    100% {
+        clip-path: polygon(50% 50%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 0% 100%);
+    }
 }
 
 @keyframes spinner-oaa3wk {
-   0% {
-      transform: scaleY(1) rotate(0deg);
-   }
+    0% {
+        transform: scaleY(1) rotate(0deg);
+    }
 
-   49.99% {
-      transform: scaleY(1) rotate(135deg);
-   }
+    49.99% {
+        transform: scaleY(1) rotate(135deg);
+    }
 
-   50% {
-      transform: scaleY(-1) rotate(0deg);
-   }
+    50% {
+        transform: scaleY(-1) rotate(0deg);
+    }
 
-   100% {
-      transform: scaleY(-1) rotate(-135deg);
-   }
+    100% {
+        transform: scaleY(-1) rotate(-135deg);
+    }
 }
 
 
@@ -263,6 +313,7 @@ body {
     .text-hidden-desktop {
         display: none;
     }
+
     .w-100.fit-content-desktop {
         width: fit-content !important
     }
@@ -278,13 +329,13 @@ body {
         max-width: 60vw !important;
     }
 }
- 
+
 /***************************************/
 /********** Media Queries Styles ***************/
 
 /* Desktop */
 @media (max-width: 992px) {
-    .login-card{
+    .login-card {
         width: 65%
     }
 }
@@ -294,10 +345,12 @@ body {
     .profile-right-column {
         position: relative
     }
+
     .profile-page-container {
         overflow-y: scroll;
     }
-    .login-card{
+
+    .login-card {
         width: 85%
     }
 }

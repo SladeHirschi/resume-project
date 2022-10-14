@@ -7,6 +7,7 @@ import Profile from './tssrc/pages/Profile'
 import { RouteObject } from 'react-router-dom';
 import SignUp from './tssrc/pages/SignUp';
 import Login from './tssrc/pages/Login';
+import Skills from './tssrc/pages/Skills';
 
 export const appRoutes: Array<RouteObject> = [
     {
@@ -22,6 +23,10 @@ export const appRoutes: Array<RouteObject> = [
         path: "/profile",
         element: <Profile />
     },
+    {
+        path: "/skills",
+        element: <Skills />
+    }
 ]
 
 export const outsideRoutes: Array<RouteObject> = [

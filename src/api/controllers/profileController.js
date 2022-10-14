@@ -27,7 +27,7 @@ exports.createWorkData = async (req, res) => {
     var endDate = req.body.endDate;
     var isCurrent = req.body.isCurrent;
     var type = req.body.isCurrent;
-    var contactInfo = await profile_model.createWorkData({userId, occupation, company, description, startDate, endDate, isCurrent, type});
+    var contactInfo = await profile_model.createWorkData(userId, occupation, company, description, startDate, endDate, isCurrent, type);
     res.status(200).json({contactInfo})
 }
  
@@ -36,7 +36,7 @@ exports.createBasicInfo = async (req, res) => {
     var label = req.body.label;
     var value = req.body.value;
     var hyperlink = req.body.hyperlink;
-    var basicInfo = await profile_model.createBasicInfo({userId, label, value, hyperlink});
+    var basicInfo = await profile_model.createBasicInfo(userId, label, value, hyperlink);
     res.status(200).json({basicInfo})
 }
 
@@ -45,7 +45,7 @@ exports.createContactInfo = async (req, res) => {
     var label = req.body.label;
     var value = req.body.value;
     var hyperlink = req.body.hyperlink;
-    var contactInfo = await profile_model.createContactInfo({userId, label, value, hyperlink});
+    var contactInfo = await profile_model.createContactInfo(userId, label, value, hyperlink);
     res.status(200).json({contactInfo})
 }
 
@@ -54,7 +54,7 @@ exports.editBasicInfo = async (req, res) => {
     var label = req.body.label;
     var value = req.body.value;
     var hyperlink = req.body.hyperlink;
-    var basicInfo = await profile_model.editBasicInfo({id, label, value, hyperlink});
+    var basicInfo = await profile_model.editBasicInfo(id, label, value, hyperlink);
     res.status(200).json({basicInfo})
 }
 
@@ -69,7 +69,7 @@ exports.editContactInfo = async (req, res) => {
     var label = req.body.label;
     var value = req.body.value;
     var hyperlink = req.body.hyperlink;
-    var contactInfo = await profile_model.editContactInfo({id, label, value, hyperlink});
+    var contactInfo = await profile_model.editContactInfo(id, label, value, hyperlink);
     res.status(200).json({contactInfo})
 }
 
@@ -88,7 +88,7 @@ exports.editWorkData = async (req, res) => {
     var endDate = req.body.endDate;
     var isCurrent = req.body.isCurrent;
     var type = req.body.type;
-    var workData = await profile_model.editWorkData({id, occupation, company, description, startDate, endDate, isCurrent, type});
+    var workData = await profile_model.editWorkData(id, occupation, company, description, startDate, endDate, isCurrent, type);
     res.status(200).json({workData})
 }
 

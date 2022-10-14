@@ -1,6 +1,7 @@
 import { useEffect, FC, useRef } from "react";
 import { MdPersonOutline, MdListAlt } from "react-icons/md";
 import { TbBrandGithub } from 'react-icons/tb';
+import { BiWrench } from 'react-icons/bi';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
@@ -15,6 +16,7 @@ const SideBar: FC = () => {
     const sideBarList: Array<SideBarIcon> = [
         { icon: <MdPersonOutline />, link: '/profile', label: 'Profile' },
         { icon: <TbBrandGithub />, link: '/projects', label: 'Projects' },
+        { icon: <BiWrench />, link: '/skills', label: 'Skills' },
     ];
 
 
