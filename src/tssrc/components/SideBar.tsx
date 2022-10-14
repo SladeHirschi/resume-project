@@ -16,7 +16,7 @@ const SideBar: FC = () => {
     const sideBarList: Array<SideBarIcon> = [
         { icon: <MdPersonOutline />, link: '/profile', label: 'Profile' },
         { icon: <TbBrandGithub />, link: '/projects', label: 'Projects' },
-        { icon: <BiWrench />, link: '/skills', label: 'Skills' },
+        { icon: <BiWrench />, link: '/skillsList', label: 'Skills' },
     ];
 
 

@@ -23,3 +23,5 @@
 * Verify JWT's in backend to ensure they are valid and not expired
 * Add functionality to create project cards in projects section
 * Better 404 page
+* REFACTOR a lot of code
+* Allow users to change their profile picture and declared occupation
