@@ -24,7 +24,7 @@ export const appRoutes: Array<RouteObject> = [
         element: <Profile />
     },
     {
-        path: "/skills",
+        path: "/skillsList",
         element: <Skills />
     }
 ]
