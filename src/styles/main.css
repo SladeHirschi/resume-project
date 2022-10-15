@@ -162,6 +162,13 @@ body {
     overflow-y: scroll;
     height: 100%;
 }
+.profile-left-column::-webkit-scrollbar { 
+    display: none; 
+}
+
+.profile-right-column::-webkit-scrollbar { 
+    display: none; 
+}
 
 .profile-image-container {
     padding: 1rem;

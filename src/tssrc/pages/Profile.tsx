@@ -351,7 +351,7 @@ const Profile: FC = () => {
                 </div>
 
 
-                <div className='col-md-8 h-100'>
+                <div className='col-md-8 h-100 profile-right-column'>
                     <div className='d-flex flex-column h-100'>
 
                         <div style={{ flex: 1, minHeight: 0 }}>
