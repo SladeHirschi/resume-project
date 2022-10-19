@@ -9,8 +9,8 @@ function updateOptions(options: any) {
     return update;
 }
 
-const defaultFetch = (url: string, options: object) => {
-    return fetch(url, updateOptions(options));
+const defaultFetch = (path: string, options: object) => {
+    return fetch(process.env.REACT_APP_BASE_URL + path, updateOptions(options));
 }
 
 export default defaultFetch

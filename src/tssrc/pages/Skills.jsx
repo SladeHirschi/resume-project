@@ -35,7 +35,7 @@ const Skills = () => {
     }
 
     async function getCategories() {
-        var response = await defaultFetch(process.env.REACT_APP_BASE_URL + '/categories?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
+        var response = await defaultFetch('/categories?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
         var categories = await response.json();
         categories?.map(cat => { if (cat.skills == null) { cat.skills = [] } })
         setCategories(categories)
@@ -44,7 +44,7 @@ const Skills = () => {
     async function getSkillOptions() {
         setLoading(true);
         const getSkills = async () => {
-            var response = await defaultFetch(process.env.REACT_APP_BASE_URL + '/skills', { method: 'GET' });
+            var response = await defaultFetch('/skills', { method: 'GET' });
             var lightcastSkills = await response.json();
             setSkills(lightcastSkills)
         }
