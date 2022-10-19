@@ -54,11 +54,13 @@ const Skills = () => {
 
     async function createSkill(skill) {
         var selectedCategory = getSelectedCategory();
-        var response = await fetchWithReload(() => CreateSkillFetch(skill, selectedCategory.id));
+        var params = [{key: 'label', value: skill.label}, {key: 'value', value: skill.value}, {key: 'categoryId', value: selectedCategory.id}]
+        var response = await fetchWithReload(() => CreateSkillFetch(params));
     }
 
-    async function updateSkill(skillId, newSkill) {
-        await fetchWithReload(() => UpdateSkillFetch(skillId, newSkill));
+    async function updateSkill(skillId, categoryId, newSkill) {
+        var params = [{key: 'label', value: newSkill.label}, {key: 'value', value: newSkill.value}]
+        await fetchWithReload(() => UpdateSkillFetch(skillId, params));
     }
 
     async function deleteSkill(e, skillId) {

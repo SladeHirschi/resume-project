@@ -1,8 +1,8 @@
 # Slade Hirschi Resume
 
 ## This is my (work in process) weh app hosted on heroku with a free tier AWS database.
-
-### Technologies include: React.js • Typescript • Node.js • MySql
+### Technologies include: React.js • Typescript • Node.js • MySql • Bootstrap
+## APIS: LightCast skills API
 
 ## Login
 * To login and see my resume info use:
@@ -25,3 +25,5 @@
 * Better 404 page
 * REFACTOR a lot of code
 * Allow users to change their profile picture and declared occupation
+* Use a different API for the skills select
+* Make more user firendly
