@@ -101,10 +101,10 @@ const Login: FC = () => {
 
                     </div>
 
-                    <button className='btn btn-primary btn-lg w-100 mb-3' onClick={login}>Sign in</button>
+                    <button id="sign-in-button" className='btn btn-primary btn-lg w-100 mb-3' onClick={login}>Sign in</button>
                     <div id="googleSignInButton"></div>
                     <div className="separator mb-3">Or</div>
-                    <a href='/signUp' className='btn btn-dark btn-lg w-100'> Sign Up</a>
+                    <a id="sign-up-button" href='/signUp' className='btn btn-dark btn-lg w-100'> Sign Up</a>
                 </>
             </div>
 
