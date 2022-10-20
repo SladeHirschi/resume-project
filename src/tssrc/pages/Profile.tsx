@@ -13,6 +13,7 @@ import EmailModal from "../components/modals/EmailModal";
 import defaultFetch from "../helpers/fetch/defaultFetch";
 import parseJWT from "../helpers/fetch/jwt";
 import moment from "moment";
+import { CreateWorkDataFetch } from "../helpers/fetch/componentFetches/profile";
 
 type Info = {
     id: null | number
@@ -48,34 +49,19 @@ const Profile: FC = () => {
     async function getData() {
         setLoading(true);
         const getWorkData = async (): Promise<void> => {
-            const response: any = await defaultFetch(process.env.REACT_APP_BASE_URL + '/getWorkData?userId=' + parseJWT(sessionStorage.jwt).userId, {
-                method: 'GET',
-                headers: {
-                    'Content-type': 'x-www-form-urlencoded'
-                },
-            });
+            const response: any = await defaultFetch('/getWorkData?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
             var workDataResponse = await response.json();
             setWorkData(workDataResponse.workData);
         }
 
         const getBasicInfo = async (): Promise<void> => {
-            const response: any = await defaultFetch(process.env.REACT_APP_BASE_URL + '/getBasicInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
-                method: 'GET',
-                headers: {
-                    'Content-type': 'x-www-form-urlencoded'
-                },
-            });
+            const response: any = await defaultFetch('/getBasicInfo?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
             var basicInfoResponse = await response.json();
             setBasicInfo(basicInfoResponse.basicInfo)
         }
 
         const getContactInfo = async (): Promise<void> => {
-            const response: any = await defaultFetch(process.env.REACT_APP_BASE_URL + '/getContactInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
-                method: 'GET',
-                headers: {
-                    'Content-type': 'x-www-form-urlencoded'
-                },
-            });
+            const response: any = await defaultFetch('/getContactInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {method: 'GET'});
             var contactInfoResponse = await response.json();
             setContactInfo(contactInfoResponse.contactInfo)
         }
@@ -99,20 +85,16 @@ const Profile: FC = () => {
     }
 
     async function createWorkData() {
-        var body: string = 'occupation=' + encodeURIComponent(workDataDraft.occupation);
-        body += '&company=' + encodeURIComponent(workDataDraft.company);
-        body += '&description=' + encodeURIComponent(workDataDraft.description);
-        body += '&startDate=' + encodeURIComponent(workDataDraft.startDate);
-        body += '&endDate=' + encodeURIComponent(workDataDraft.endDate ?? '');
-        body += '&isCurrent=' + encodeURIComponent(workDataDraft.isCurrent ? 1 : 0);
-        body += '&type=' + encodeURIComponent(workDataDraft.type);
-        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/workData?userId=' + parseJWT(sessionStorage.jwt).userId, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: body
-        })
+        var params = [
+            {key: 'occupation', value: workDataDraft.occupation},
+            {key: 'company', value: workDataDraft.company},
+            {key: 'description', value: workDataDraft.description},
+            {key: 'startDate', value: workDataDraft.startDate},
+            {key: 'endDate', value: workDataDraft.endDate ?? ''},
+            {key: 'isCurrent', value: workDataDraft.isCurrent ? '1' : '0'},
+            {key: 'type', value: workDataDraft.type},
+        ]
+        var response = await CreateWorkDataFetch(params)
     }
 
     async function editWorkData() {
@@ -123,7 +105,7 @@ const Profile: FC = () => {
         body += '&endDate=' + encodeURIComponent(workDataDraft.endDate ?? '');
         body += '&isCurrent=' + encodeURIComponent(workDataDraft.isCurrent ? 1 : 0);
         body += '&type=' + encodeURIComponent(workDataDraft.type);
-        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/workData/' + workDataDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
+        const response: any = await defaultFetch('/workData/' + workDataDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -149,7 +131,7 @@ const Profile: FC = () => {
         var body: string = 'label=' + encodeURIComponent(contactInfoDraft.label);
         body += '&value=' + encodeURIComponent(contactInfoDraft.value);
         body += '&hyperlink=' + encodeURIComponent(contactInfoDraft.link);
-        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/contactInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
+        const response: any = await defaultFetch('/contactInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -163,7 +145,7 @@ const Profile: FC = () => {
         var body: string = 'label=' + encodeURIComponent(contactInfoDraft.label);
         body += '&value=' + encodeURIComponent(contactInfoDraft.value);
         body += '&hyperlink=' + encodeURIComponent(contactInfoDraft.link);
-        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/contactInfo/' + contactInfoDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
+        const response: any = await defaultFetch('/contactInfo/' + contactInfoDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -189,7 +171,7 @@ const Profile: FC = () => {
         var body: string = 'label=' + encodeURIComponent(basicInfoDraft.label);
         body += '&value=' + encodeURIComponent(basicInfoDraft.value);
         body += '&hyperlink=' + encodeURIComponent(basicInfoDraft.link);
-        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/basicInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
+        const response: any = await defaultFetch('/basicInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -203,7 +185,7 @@ const Profile: FC = () => {
         var body: string = 'label=' + encodeURIComponent(basicInfoDraft.label);
         body += '&value=' + encodeURIComponent(basicInfoDraft.value);
         body += '&hyperlink=' + encodeURIComponent(basicInfoDraft.link);
-        const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/basicInfo/' + basicInfoDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
+        const response: any = await defaultFetch('/basicInfo/' + basicInfoDraft.id + '?userId=' + parseJWT(sessionStorage.jwt).userId, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -217,7 +199,7 @@ const Profile: FC = () => {
         setLoading(true);
         var body: string = 'message=' + encodeURIComponent(SMSMessage);
         try {
-            const response = await fetch(process.env.REACT_APP_BASE_URL + '/sendSMS', {
+            const response = await defaultFetch('/sendSMS', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -237,7 +219,7 @@ const Profile: FC = () => {
         var body: string = 'body=' + encodeURIComponent(emailDraft.body);
         body += '&sender=' + encodeURIComponent(emailDraft.sender);
         try {
-            const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/sendEmail', {
+            const response: any = await defaultFetch('/sendEmail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -256,7 +238,7 @@ const Profile: FC = () => {
     async function deleteBasicInfo(basicInfoId: number) {
         setLoading(true);
         try {
-            const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/basicInfo/' + basicInfoId, {
+            const response: any = await defaultFetch('/basicInfo/' + basicInfoId, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -272,7 +254,7 @@ const Profile: FC = () => {
     async function deleteContactInfo(contactInfoId: number) {
         setLoading(true);
         try {
-            const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/contactInfo/' + contactInfoId, {
+            const response: any = await defaultFetch('/contactInfo/' + contactInfoId, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -288,7 +270,7 @@ const Profile: FC = () => {
     async function deleteWorkData(workDataId: number) {
         setLoading(true);
         try {
-            const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/workData/' + workDataId, {
+            const response: any = await defaultFetch('/workData/' + workDataId, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -314,7 +296,7 @@ const Profile: FC = () => {
             <div className='row h-100'>
                 <div className='col-md-4 profile-left-column'>
                     <div className='profile-image-container'>
-                        <img src={require('../../assets/slade.jpeg')} width='85%' height='85%' alt="Me" style={{borderRadius: 2}} />
+                        <img src={require('../../assets/slade.jpeg')} width='85%' height='85%' alt="Me" style={{ borderRadius: 2 }} />
                     </div>
 
                     <div className='profile-work-container'>
