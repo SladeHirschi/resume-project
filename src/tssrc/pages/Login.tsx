@@ -72,6 +72,7 @@ const Login: FC = () => {
                             }
                         >
                             <input
+                                id='email-input'
                                 onChange={(e) => setEmail(e.target.value)}
                                 type="email"
                                 className="form-control form-control-lg"
@@ -90,6 +91,7 @@ const Login: FC = () => {
                             }
                         >
                             <input
+                                id='password-input'
                                 onChange={(e) => setPassword(e.target.value)}
                                 type="password"
                                 className="form-control form-control-lg"
