@@ -172,7 +172,7 @@ const SignUp: FC = () => {
                             </div>
                         </div>
 
-                        <button type='submit' className='btn btn-primary btn-lg w-100 mb-3'>Submit</button>
+                        <button id="sign-up-submit" type='submit' className='btn btn-primary btn-lg w-100 mb-3'>Submit</button>
                     </Form>}
                 </Formik>
 
