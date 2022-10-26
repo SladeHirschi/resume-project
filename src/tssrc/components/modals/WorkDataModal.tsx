@@ -77,6 +77,7 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
                         <div className="d-flex align-items-center">
                             <span className='text-nowrap me-3'>Start Date</span>
                             <DatePicker
+                                id="start-date"
                                 selected={draft.startDate.length > 0 ? new Date(draft.startDate) : new Date()}
                                 onChange={(date: Date) => onChangeDraft({ ...draft, startDate: moment(date).format('YYYY/MM/DD') })}
                             />
@@ -87,6 +88,7 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
                         <div className="d-flex align-items-center">
                             <span className='text-nowrap me-3'>End Date</span>
                             <DatePicker
+                                id="end-date"
                                 selected={draft.endDate && draft.endDate.length > 0 ? new Date(draft.endDate) : new Date()}
                                 onChange={(date: Date) => onChangeDraft({ ...draft, endDate: moment(date).format('YYYY/MM/DD') })}
                             />
