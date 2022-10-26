@@ -124,8 +124,8 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onClose}>Close</Button>
-                <Button variant="primary" onClick={onSubmit}>Submit</Button>
+                <Button id="close-work-data-modal" variant="secondary" onClick={onClose}>Close</Button>
+                <Button id="submit-work-data-modal" variant="primary" onClick={onSubmit}>Submit</Button>
             </Modal.Footer>
         </Modal>
     );
