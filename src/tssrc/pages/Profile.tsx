@@ -303,6 +303,7 @@ const Profile: FC = () => {
                         <div className="separator">Work</div>
                         <div className='d-flex justify-content-end'>
                             <button
+                                id="work-data-button"
                                 className='btn btn-primary d-flex align-items-center justify-content-between mb-2'
                                 onClick={() => setShowWorkDataModal(true)}
                             >
@@ -314,8 +315,8 @@ const Profile: FC = () => {
                             return (
                                 <div key={index} className='work-data-card'>
                                     <div className="ms-2 d-flex">
-                                        <HiPencil size={25} onClick={() => { setShowWorkDataModal(true); setWorkDataDraft(data) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
-                                        <HiTrash size={25} onClick={() => deleteWorkData(data.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                        <HiPencil id="edit-work-data-button" size={25} onClick={() => { setShowWorkDataModal(true); setWorkDataDraft(data) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                        <HiTrash id="delete-work-data-button" size={25} onClick={() => deleteWorkData(data.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
                                     </div>
                                     <div className='work-data-card-title'>
                                         <div>{data.occupation}</div>
@@ -356,6 +357,7 @@ const Profile: FC = () => {
                             {parseJWT(sessionStorage.jwt).firstName == 'Slade' && <div className='row gx-3 gy-1 col-md-6 mb-5'>
                                 <div className='col-xl-4'>
                                     <button
+                                        id="sms-modal-button"
                                         className='btn btn-primary d-flex align-items-center w-100 fit-content-desktop'
                                         onClick={() => setShowSMSModal(true)}
                                     >
@@ -365,6 +367,7 @@ const Profile: FC = () => {
                                 </div>
                                 <div className='col-xl-4'>
                                     <button
+                                        id="email-modal-button"
                                         className='btn btn-secondary d-flex align-items-center w-100 fit-content-desktop'
                                         onClick={() => setShowEmailModal(true)}
                                     >
@@ -374,6 +377,7 @@ const Profile: FC = () => {
                                 </div>
                                 <div className='col-xl-4'>
                                     <a
+                                        id="github-button"
                                         className='btn btn-dark d-flex align-items-center w-100 fit-content-desktop'
                                         href="https://github.com/SladeHirschi"
                                         target="_blank"
@@ -391,6 +395,7 @@ const Profile: FC = () => {
 
                             <div className='d-flex justify-content-end'>
                                 <button
+                                    id="contact-info-button"
                                     className='btn btn-primary d-flex align-items-center justify-content-between mb-2'
                                     onClick={() => setShowContactInfoModal(true)}
                                 >
@@ -413,8 +418,8 @@ const Profile: FC = () => {
                                                     }
                                                 </span>
                                                 <div className="ms-2 d-flex">
-                                                    <HiPencil size={20} onClick={() => { setShowContactInfoModal(true); setContactInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
-                                                    <HiTrash size={20} onClick={() => deleteContactInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiPencil id="edit-contact-info-button" size={20} onClick={() => { setShowContactInfoModal(true); setContactInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiTrash id="delete-contact-info-button" size={20} onClick={() => deleteContactInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
                                                 </div>
                                             </div>
                                         </div>
@@ -428,6 +433,7 @@ const Profile: FC = () => {
 
                             <div className='d-flex justify-content-end'>
                                 <button
+                                    id="basic-info-button"
                                     className='btn btn-primary d-flex align-items-center justify-content-between mb-2'
                                     onClick={() => setShowBasicInfoModal(true)}
                                 >
@@ -450,8 +456,8 @@ const Profile: FC = () => {
                                                     }
                                                 </span>
                                                 <div className="ms-2 d-flex">
-                                                    <HiPencil size={20} onClick={() => { setShowBasicInfoModal(true); setBasicInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
-                                                    <HiTrash size={20} onClick={() => deleteBasicInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiPencil id="edit-basic-info-button" size={20} onClick={() => { setShowBasicInfoModal(true); setBasicInfoDraft(item) }} className='header-home' style={{ marginLeft: '0.25rem' }} />
+                                                    <HiTrash id="delete-basic-info-button" size={20} onClick={() => deleteBasicInfo(item.id!)} className='header-home' style={{ marginLeft: '0.25rem' }} />
                                                 </div>
                                             </div>
                                         </div>
