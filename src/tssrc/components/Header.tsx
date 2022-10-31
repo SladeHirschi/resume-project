@@ -14,7 +14,7 @@ const Header: FC = () => {
                     <a href={'/'}>
                         <img className='header-home' src={require("../../assets/logo.png")} height='48px' width='48px'></img>
                     </a>
-                    <button className="btn btn-link header-home" onClick={() => destorySession()} style={{color: 'white'}}>Logout</button>
+                    <button id="logout-button" className="btn btn-link header-home" onClick={() => destorySession()} style={{color: 'white'}}>Logout</button>
                 </div>
             </div>
         </div>
