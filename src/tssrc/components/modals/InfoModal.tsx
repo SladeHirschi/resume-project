@@ -73,8 +73,8 @@ const InfoModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: ContactInf
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() => {onClose(); setShowHyperLink(false)}}>Close</Button>
-                <Button variant="primary" onClick={() => {onSubmit(); setShowHyperLink(false)}}>Submit</Button>
+                <Button id="close-info-modal" variant="secondary" onClick={() => {onClose(); setShowHyperLink(false)}}>Close</Button>
+                <Button id="submit-info-modal" variant="primary" onClick={() => {onSubmit(); setShowHyperLink(false)}}>Submit</Button>
             </Modal.Footer>
         </Modal>
     );
