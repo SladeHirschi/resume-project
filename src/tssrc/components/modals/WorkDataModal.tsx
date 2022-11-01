@@ -74,30 +74,28 @@ const WorkDataModal = ({ draft, onChangeDraft, onSubmit, onClose, show }: WorkDa
 
                 <div className="row mb-3">
                     <div className="col-md-6">
-                        <div className="d-flex align-items-center">
-                            <span className='text-nowrap me-3'>Start Date</span>
-                            <DatePicker
-                                id="start-date"
-                                selected={draft.startDate.length > 0 ? new Date(draft.startDate) : new Date()}
-                                onChange={(date: Date) => onChangeDraft({ ...draft, startDate: moment(date).format('YYYY/MM/DD') })}
-                            />
-                        </div>
+                    <label htmlFor="description" className="form-label">Start Date</label>
+                        <DatePicker
+                            className="form-control"
+                            id="start-date"
+                            onChange={(date: Date) => onChangeDraft({ ...draft, startDate: moment(date).format('YYYY/MM/DD') })}
+                            selected={draft.startDate && draft.startDate.length > 0 ? new Date(draft.startDate) : new Date()}
+                        />
                     </div>
 
                     <div className="col-md-6">
-                        <div className="d-flex align-items-center">
-                            <span className='text-nowrap me-3'>End Date</span>
-                            <DatePicker
-                                id="end-date"
-                                selected={draft.endDate && draft.endDate.length > 0 ? new Date(draft.endDate) : new Date()}
-                                onChange={(date: Date) => onChangeDraft({ ...draft, endDate: moment(date).format('YYYY/MM/DD') })}
-                            />
-                        </div>
+                        <label htmlFor="description" className="form-label">End Date</label>
+                        <DatePicker
+                            className="form-control"
+                            id="end-date"
+                            onChange={(date: Date) => onChangeDraft({ ...draft, endDate: moment(date).format('YYYY/MM/DD') })}
+                            selected={draft.endDate && draft.endDate.length > 0 ? new Date(draft.endDate) : new Date()}
+                        />
                     </div>
                 </div>
 
                 <div className='mb-3 d-flex'>
-                    <div className='btn-group'> 
+                    <div className='btn-group'>
                         <button
                             className={"btn btn-primary" + (draft.type === 'work' ? ' active' : '')}
                             onClick={() => changeType('work')}

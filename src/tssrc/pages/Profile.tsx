@@ -428,7 +428,7 @@ const Profile: FC = () => {
                             </div>
                         </div>
 
-                        <div style={{ flex: 1, minHeight: 0, overflowY: 'scroll' }}>
+                        <div id="basic-info-section" style={{ flex: 1, minHeight: 0, overflowY: 'scroll' }}>
                             <div className="separator">Basic Info</div>
 
                             <div className='d-flex justify-content-end'>
