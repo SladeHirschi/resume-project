@@ -1,5 +1,8 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 const email_controller = require('../controllers/emailController');
 const twilio_controller = require('../controllers/twilioController');
 const profile_controller = require('../controllers/profileController');
@@ -23,9 +26,10 @@ const auth_model = require('../models/authModel');
 // })
 router.post('/sendEmail', email_controller.sendEmail)
 router.post('/sendSMS', twilio_controller.sendSMS)
-router.get('/getWorkData', profile_controller.getWorkData)
-router.get('/getBasicInfo', profile_controller.getBasicInfo)
-router.get('/getContactInfo', profile_controller.getContactInfo)
+router.get('/workdata', profile_controller.getWorkData)
+router.get('/basicInfo', profile_controller.getBasicInfo)
+router.get('/contactInfo', profile_controller.getContactInfo)
+router.get('/profilePicture', profile_controller.getProfilePicture)
 
 router.post('/workData', profile_controller.createWorkData)
 router.post('/basicInfo', profile_controller.createBasicInfo)
@@ -38,6 +42,8 @@ router.put('/contactInfo/:id', profile_controller.editContactInfo)
 router.delete('/workData/:id', profile_controller.deleteWorkData)
 router.delete('/basicInfo/:id', profile_controller.deleteBasicInfo)
 router.delete('/contactInfo/:id', profile_controller.deleteContactInfo)
+
+router.post('/upload', upload.single('profilePicture'), profile_controller.upload)
 
 router.get('/skills', lightcast_controller.getSkills)
 router.get('/categories', lightcast_controller.getCategories)

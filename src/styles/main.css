@@ -177,6 +177,10 @@ body {
     align-items: center;
 }
 
+.profile-picture:hover {
+    transform: scale(1.01);
+}
+
 .profile-work-container {
     display: flex;
     flex-direction: column;

@@ -8,14 +8,13 @@
 * To login and see my resume info use:
   * email: sladehirschi@gmail.com
   * password: resume1234
-* Login with google just to bypass the login screen basically, your user will not be saved (see future work*)
 
 ## Sign Up
 * You may also sign up with your own account and create data for your user, which will persist
-* Pssword encryption is done with bcrypt
+* Password encryption is done with bcrypt
 
 ## Notes:
-* I started this project on September 18, so I haven't had much time to work on it that's why there's a not much to see
+* I've only worked on this project for about a month and I just wanted to make a basic Resume Maker web app
 * I am still in school and have been working part time another reason why there's not a lot
 
 ## Future Work:
@@ -23,7 +22,8 @@
 * Verify JWT's in backend to ensure they are valid and not expired
 * Add functionality to create project cards in projects section
 * Better 404 page
-* REFACTOR a lot of code
+* Refactor some things
 * Allow users to change their profile picture and declared occupation
 * Use a different API for the skills select
 * Make more user firendly
+* Add Multifactor Authentication

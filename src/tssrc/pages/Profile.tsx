@@ -1,4 +1,4 @@
-import { useEffect, useState, FC } from "react";
+import { useEffect, useState, FC, createRef } from "react";
 import { AiOutlinePlus } from 'react-icons/ai';
 import { MdLocationOn, MdTextsms, MdOutlineEmail } from 'react-icons/md';
 import { TbBrandGithub } from 'react-icons/tb';
@@ -34,11 +34,14 @@ const Profile: FC = () => {
     const [basicInfoDraft, setBasicInfoDraft] = useState<Info>({ id: null, label: '', value: '', link: '' });
     const [contactInfoDraft, setContactInfoDraft] = useState<Info>({ id: null, label: '', value: '', link: '' });
 
+    const [profilePicture, setProfilePicture] = useState<string>('');
     const [showSMSModal, setShowSMSModal] = useState<boolean>(false);
     const [showEmailModal, setShowEmailModal] = useState<boolean>(false);
     const [showWorkDataModal, setShowWorkDataModal] = useState<boolean>(false);
     const [showBasicInfoModal, setShowBasicInfoModal] = useState<boolean>(false);
     const [showContactInfoModal, setShowContactInfoModal] = useState<boolean>(false);
+    
+    const fileUploaderRef = createRef<HTMLInputElement>();
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -49,26 +52,33 @@ const Profile: FC = () => {
     async function getData() {
         setLoading(true);
         const getWorkData = async (): Promise<void> => {
-            const response: any = await defaultFetch('/getWorkData?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
+            const response: any = await defaultFetch('/workData?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
             var workDataResponse = await response.json();
             setWorkData(workDataResponse.workData);
         }
 
         const getBasicInfo = async (): Promise<void> => {
-            const response: any = await defaultFetch('/getBasicInfo?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
+            const response: any = await defaultFetch('/basicInfo?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
             var basicInfoResponse = await response.json();
             setBasicInfo(basicInfoResponse.basicInfo)
         }
 
         const getContactInfo = async (): Promise<void> => {
-            const response: any = await defaultFetch('/getContactInfo?userId=' + parseJWT(sessionStorage.jwt).userId, {method: 'GET'});
+            const response: any = await defaultFetch('/contactInfo?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
             var contactInfoResponse = await response.json();
             setContactInfo(contactInfoResponse.contactInfo)
+        }
+
+        const getProfilePicture = async (): Promise<void> => {
+            const response: any = await defaultFetch('/profilePicture?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
+            var profilePictureResponse = await response.json();
+            setProfilePicture(profilePictureResponse.publicUrl);
         }
 
         await getWorkData();
         await getBasicInfo();
         await getContactInfo();
+        await getProfilePicture();
         await setLoading(false);
     }
 
@@ -86,13 +96,13 @@ const Profile: FC = () => {
 
     async function createWorkData() {
         var params = [
-            {key: 'occupation', value: workDataDraft.occupation},
-            {key: 'company', value: workDataDraft.company},
-            {key: 'description', value: workDataDraft.description},
-            {key: 'startDate', value: workDataDraft.startDate},
-            {key: 'endDate', value: workDataDraft.endDate ?? ''},
-            {key: 'isCurrent', value: workDataDraft.isCurrent ? '1' : '0'},
-            {key: 'type', value: workDataDraft.type},
+            { key: 'occupation', value: workDataDraft.occupation },
+            { key: 'company', value: workDataDraft.company },
+            { key: 'description', value: workDataDraft.description },
+            { key: 'startDate', value: workDataDraft.startDate },
+            { key: 'endDate', value: workDataDraft.endDate ?? '' },
+            { key: 'isCurrent', value: workDataDraft.isCurrent ? '1' : '0' },
+            { key: 'type', value: workDataDraft.type },
         ]
         var response = await CreateWorkDataFetch(params)
     }
@@ -283,6 +293,25 @@ const Profile: FC = () => {
         }
     }
 
+    const uploadFile = async (e: any) => {
+        setLoading(true);
+        if (!fileUploaderRef?.current?.files || !fileUploaderRef.current.files[0]) {
+            alert("invalid file");
+            return;
+        }
+        var formData = new FormData();
+        formData.append("profilePicture", fileUploaderRef.current.files[0]);
+        const response = await fetch('http://localhost:8080/upload?userId=' + parseJWT(sessionStorage.jwt).userId, {
+            method: 'POST',
+            body: formData
+        })
+        getData();
+    };
+
+    const openFileExplorer = () => {
+        fileUploaderRef?.current?.click();
+    }
+
     if (loading) {
         return (
             <div className='w-100 h-100 d-flex justify-content-center align-items-center'>
@@ -296,7 +325,22 @@ const Profile: FC = () => {
             <div className='row h-100'>
                 <div className='col-md-4 profile-left-column'>
                     <div className='profile-image-container'>
-                        <img src={require('../../assets/slade.jpeg')} width='85%' height='85%' alt="Me" style={{ borderRadius: 2 }} />
+                        <input
+                            name='profilePicture'
+                            style={{display: 'none'}}
+                            ref={fileUploaderRef}
+                            onChange={uploadFile}
+                            type='file'>
+                        </input>
+                            <img 
+                                className='profile-picture'
+                                onClick={openFileExplorer} 
+                                src={profilePicture.length > 0 ? profilePicture : 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'} 
+                                width='85%' 
+                                height='85%' 
+                                alt="Me" 
+                                style={{ borderRadius: 2, cursor: 'pointer' }} 
+                            />
                     </div>
 
                     <div className='profile-work-container'>
@@ -346,13 +390,13 @@ const Profile: FC = () => {
                                         parseJWT(sessionStorage.jwt).name
                                 }
                                 </h3>
-                                <div style={{ fontSize: '1.25rem', marginLeft: '1rem', display: 'flex' }}>
+                               {parseJWT(sessionStorage.jwt).userId == '3' && <div style={{ fontSize: '1.25rem', marginLeft: '1rem', display: 'flex' }}>
                                     <MdLocationOn />
                                     <h6 style={{ color: 'gray' }}>Washington, UT</h6>
-                                </div>
+                                </div>}
                             </div>
 
-                            <h5 style={{ color: 'rgb(33, 188, 240)' }}>Software Developer</h5>
+                            <h5 style={{ color: 'rgb(33, 188, 240)' }}>{parseJWT(sessionStorage.jwt).occupation}</h5>
 
                             {parseJWT(sessionStorage.jwt).firstName == 'Slade' && <div className='row gx-3 gy-1 col-md-6 mb-5'>
                                 <div className='col-xl-4'>

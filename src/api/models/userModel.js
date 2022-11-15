@@ -6,15 +6,16 @@ const authModel = require('./authModel');
 const query = util.promisify(con.query).bind(con);
 
 exports.User = class User {
-    constructor(id = null, firstName = null, lastName = null, dateOfBirth = null, phoneNumber = null, email = null, password = null, created = null) {
+    constructor(id = null, firstName = null, lastName = null, dateOfBirth = null, phoneNumber = null, email = null, occupation = null, password = null, created = null) {
         this.id = id
         this.firstName = firstName
         this.lastName = lastName
         this.dateOfBirth = dateOfBirth
         this.phoneNumber = phoneNumber,
-            this.email = email,
-            this.password = password
+        this.email = email,
+        this.password = password
         this.created = created
+        this.occupation = occupation
     }
 }
 
@@ -49,14 +50,15 @@ exports.signUp = async (user) => {
     try {
         var result = await query(`
             INSERT INTO users
-                (first_name, last_name, date_of_birth, phone_number, email, password, created)
+                (first_name, last_name, date_of_birth, phone_number, email, occupation, password, created)
             VALUES
-                (?, ?, ?, ?, ?, ?, NOW())
-        `, [user.firstName, user.lastName, user.dateOfBirth, user.phoneNumber, user.email, hashedPassword])
+                (?, ?, ?, ?, ?, ?, ?, NOW())
+        `, [user.firstName, user.lastName, user.dateOfBirth, user.phoneNumber, user.email, user.occupation, hashedPassword])
         var payload = {
             userId: result.insertId,
             firstName: user.firstName,
-            lastName: user.lastName
+            lastName: user.lastName,
+            occupation: user.occupation
         }
         var token = authModel.createJWT(payload);
         return { success: true, message: 'user created', code: 201, token: token };

@@ -1,5 +1,6 @@
 import { useEffect, useState, FC } from "react";
 import { Overlay, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { AiOutlinePlus } from "react-icons/ai";
 
 type Project = {
     name: string;
@@ -85,7 +86,16 @@ const Projects: FC = () => {
 
     return (
         <div className="w-100 h-100 projects-container">
-            <h3>My Projects</h3>
+            <div className='w-100 d-flex justify-content-between align-items-center'>
+                <h3>My Projects</h3>
+                <button
+                    className='btn btn-primary d-flex align-items-center justify-content-between mb-2'
+                    // onClick={() => setShowWorkDataModal(true)}
+                >
+                    <span>Add Project</span>
+                    <AiOutlinePlus style={{ marginLeft: '0.25rem' }} />
+                </button>
+            </div>
             <hr />
             <div className='projects-grid'>
                 {projects.map((project, index) => {

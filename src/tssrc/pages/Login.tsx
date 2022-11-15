@@ -102,7 +102,7 @@ const Login: FC = () => {
                     </div>
 
                     <button id="sign-in-button" className='btn btn-primary btn-lg w-100 mb-3' onClick={login}>Sign in</button>
-                    <div id="googleSignInButton"></div>
+                    {/* <div id="googleSignInButton"></div> */}
                     <div className="separator mb-3">Or</div>
                     <a id="sign-up-button" href='/signUp' className='btn btn-dark btn-lg w-100'> Sign Up</a>
                 </>

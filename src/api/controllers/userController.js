@@ -11,7 +11,7 @@ exports.login = async (req, res) => {
 
 exports.signUp = async (req, res) => {
     var b = req.body;
-    var user = new user_model.User(null, b.firstName, b.lastName, b.dateOfBirth, b.phoneNumber, b.email, b.password, b.created)
+    var user = new user_model.User(null, b.firstName, b.lastName, b.dateOfBirth, b.phoneNumber, b.email, b.occupation, b.password, b.created)
 
     var {success, message, code, token} = await user_model.signUp(user);
     res.status(code).json({success: success, message: message, token: token})

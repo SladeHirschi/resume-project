@@ -13,6 +13,7 @@ interface UserDraft {
     dateOfBirth: string
     email: string
     password: string
+    occupation: string
     confirmPassword: string
 }
 
@@ -28,13 +29,14 @@ const SignupSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
     phoneNumber: Yup.string().required('Required').length(10, 'Invalid Phone Number'),
     password: Yup.string().required('Required').min(8, 'Must be more than 8 Characters'),
+    occupation: Yup.string().required('Required'),
     confirmPassword: Yup.string()
      .oneOf([Yup.ref('password'), null], 'Passwords must match')
 });
 
 const SignUp: FC = () => {
 
-    const emptyDraft = { firstName: '', lastName: '', phoneNumber: '', phoneNumberDisplay: '', dateOfBirth: '', email: '', password: '', confirmPassword: '' }
+    const emptyDraft = { firstName: '', lastName: '', phoneNumber: '', phoneNumberDisplay: '', dateOfBirth: '', email: '', password: '', confirmPassword: '', occupation: '' }
 
     async function signUp(values: UserDraft) {
         var body: string = 'firstName=' + encodeURIComponent(values.firstName);
@@ -42,6 +44,7 @@ const SignUp: FC = () => {
         body += '&email=' + encodeURIComponent(values.email);
         body += '&phoneNumber=' + encodeURIComponent(values.phoneNumber);
         body += '&password=' + encodeURIComponent(values.password);
+        body += '&occupation=' + encodeURIComponent(values.occupation);
         const response: any = await fetch(process.env.REACT_APP_BASE_URL + '/signUp', {
             method: 'POST',
             headers: {
@@ -141,6 +144,20 @@ const SignUp: FC = () => {
                                 />
                                 {errors.phoneNumber && touched.phoneNumber ? (
                                     <div className='text-danger'>{errors.phoneNumber}</div>
+                                ) : null}
+                            </div>
+                        </div>
+
+                        <div className='row mb-3 gy-3'>
+                            <div className="col">
+                                <Field
+                                    name="occupation"
+                                    type="text"
+                                    className={"form-control form-control-lg" + (errors.occupation && touched.occupation ? ' is-invalid' : '')}
+                                    placeholder="Occupation"
+                                />
+                                {errors.occupation && touched.occupation ? (
+                                    <div className='text-danger'>{errors.occupation}</div>
                                 ) : null}
                             </div>
                         </div>

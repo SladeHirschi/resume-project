@@ -1,4 +1,5 @@
 const profile_model = require('../models/profileModel');
+var formidable = require('formidable');
 
 exports.getWorkData = async (req, res) => {
     var userId = req.query.userId;
@@ -96,4 +97,28 @@ exports.deleteWorkData = async (req, res) => {
     var id = req.params.id;
     await profile_model.deleteWorkData(id);
     res.status(200).end()
+}
+
+exports.upload = async (req, res) => {
+    var userId = req.query.userId;
+    if (!req.file) {
+        res.status(500).json({message: "no files present"});
+        return;
+    }
+    try {
+        const publicUrl = await profile_model.upload(req.file, userId);
+        res.status(201).json({url: publicUrl})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error})
+    }
+
+    res.status(201).end()
+}
+
+exports.getProfilePicture = async (req, res) => {
+    var userId = req.query.userId;
+
+    publicUrl = await profile_model.getProfilePicture(userId);
+    res.status(200).json({publicUrl: publicUrl});
 }
