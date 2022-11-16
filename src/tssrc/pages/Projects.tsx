@@ -239,7 +239,7 @@ const Projects: FC = () => {
                                     key={index}
                                     placement={'top'}
                                     overlay={
-                                        (deleteIconIndex == null ? <Tooltip>
+                                        (deleteIconIndex != null ? <Tooltip>
                                             {project.description}
                                         </Tooltip> : <div></div>)
                                     }
