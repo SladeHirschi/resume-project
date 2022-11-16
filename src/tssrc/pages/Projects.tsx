@@ -145,6 +145,7 @@ const Projects: FC = () => {
         })
         var uploadResponse = await response.json();
         setProjectDraft({ ...projectDraft, id: uploadResponse.insertedId, image: uploadResponse.url });
+        console.log("uploadResponse: ", uploadResponse)
         setShowImageLoader(false);
     }
 
