@@ -121,7 +121,7 @@ const Projects: FC = () => {
         setLoading(true);
 
         const getProjects = async (): Promise<void> => {
-            const response: any = await defaultFetch('/projects?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
+            const response: any = await defaultFetch('/getProjects?userId=' + parseJWT(sessionStorage.jwt).userId, { method: 'GET' });
             var projectsReponse = await response.json();
             setProjects(projectsReponse.projects);
         }
