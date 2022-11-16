@@ -179,7 +179,6 @@ const Projects: FC = () => {
             { key: 'publicURL', value: projectDraft.image},
         ]
         var response = await UpdateProjectFetch(params, projectDraft.id!);
-        console.log("There should be a notification")
         NotificationManager.success("Project Updated Successfully", "Success", 3000)
     }
 
@@ -203,8 +202,6 @@ const Projects: FC = () => {
         await setLoading(false);
         NotificationManager.success("Project Deleted Successfully", "Success", 3000)
     }
-
-    useEffect(() => {console.log("deleteIconIndex: ", deleteIconIndex)}, [deleteIconIndex])
 
     if (loading) {
         return (
