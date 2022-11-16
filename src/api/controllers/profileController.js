@@ -101,13 +101,18 @@ exports.deleteWorkData = async (req, res) => {
 
 exports.upload = async (req, res) => {
     var userId = req.query.userId;
+    var table = req.query.table;
     if (!req.file) {
         res.status(500).json({message: "no files present"});
         return;
     }
     try {
-        const publicUrl = await profile_model.upload(req.file, userId);
-        res.status(201).json({url: publicUrl})
+        const {insertedId, url, error} = await profile_model.upload(req.file, userId, table);
+        if (error != null) {
+            res.status(500).json({message: error})
+            return;
+        }
+        res.status(201).json({insertedId, url})
     } catch (error) {
         console.log(error)
         res.status(500).json({message: error})
@@ -121,4 +126,48 @@ exports.getProfilePicture = async (req, res) => {
 
     publicUrl = await profile_model.getProfilePicture(userId);
     res.status(200).json({publicUrl: publicUrl});
+}
+
+exports.getProjects = async (req, res) => {
+    var userId = req.query.userId;
+
+    projects = await profile_model.getProjects(userId);
+    res.status(200).json({projects: projects});
+}
+
+exports.createProject = async (req, res) => {
+    var userId = req.query.userId;
+    var title = req.body.name;
+    var description = req.body.description;
+    var link = req.body.link;
+    var publicURL = req.body.publicURL;
+
+    result = await profile_model.createProject(userId, title, description, link, publicURL);
+    if (!result) {
+        res.status(500).json({message: error})
+        return;
+    }
+    res.status(201).end();
+}
+
+exports.updateProject = async (req, res) => {
+    var id = req.params.id;
+    var title = req.body.name;
+    var description = req.body.description;
+    var link = req.body.link;
+    var publicURL = req.body.publicURL;
+
+    result = await profile_model.updateProject(id, title, description, link, publicURL);
+    if (!result) {
+        res.status(500).json({message: error})
+        return;
+    }
+    res.status(200).end();
+}
+
+exports.deleteProject = async (req, res) => {
+    var id = req.params.id;
+
+    await profile_model.deleteProject(id);
+    res.status(200).end();
 }

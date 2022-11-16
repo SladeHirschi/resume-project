@@ -301,7 +301,7 @@ const Profile: FC = () => {
         }
         var formData = new FormData();
         formData.append("profilePicture", fileUploaderRef.current.files[0]);
-        const response = await fetch('http://localhost:8080/upload?userId=' + parseJWT(sessionStorage.jwt).userId, {
+        const response = await fetch(process.env.REACT_APP_BASE_URL + '/upload?userId=' + parseJWT(sessionStorage.jwt).userId + '&table=profile_pictures', {
             method: 'POST',
             body: formData
         })
@@ -332,15 +332,15 @@ const Profile: FC = () => {
                             onChange={uploadFile}
                             type='file'>
                         </input>
-                            <img 
-                                className='profile-picture'
-                                onClick={openFileExplorer} 
-                                src={profilePicture.length > 0 ? profilePicture : 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'} 
-                                width='85%' 
-                                height='85%' 
-                                alt="Me" 
-                                style={{ borderRadius: 2, cursor: 'pointer' }} 
-                            />
+                        <img 
+                            className='profile-picture'
+                            onClick={openFileExplorer} 
+                            src={profilePicture.length > 0 ? profilePicture : 'https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg'} 
+                            width='85%' 
+                            height='85%' 
+                            alt="Me" 
+                            style={{ borderRadius: 4, cursor: 'pointer' }} 
+                        />
                     </div>
 
                     <div className='profile-work-container'>

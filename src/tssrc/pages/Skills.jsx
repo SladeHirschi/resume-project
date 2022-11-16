@@ -7,6 +7,7 @@ import defaultFetch from "../helpers/fetch/defaultFetch";
 import parseJWT from "../helpers/fetch/jwt";
 import FolderModal from "../components/modals/FolderModal";
 import { CreateCategoryFetch, CreateSkillFetch, DeleteCategoryFetch, DeleteSkillFetch, UpdateSkillFetch } from "../helpers/fetch/componentFetches/skills";
+import { BiWrench } from "react-icons/bi";
 
 const Skills = () => {
 
@@ -54,12 +55,12 @@ const Skills = () => {
 
     async function createSkill(skill) {
         var selectedCategory = getSelectedCategory();
-        var params = [{key: 'label', value: skill.label}, {key: 'value', value: skill.value}, {key: 'categoryId', value: selectedCategory.id}]
+        var params = [{ key: 'label', value: skill.label }, { key: 'value', value: skill.value }, { key: 'categoryId', value: selectedCategory.id }]
         var response = await fetchWithReload(() => CreateSkillFetch(params));
     }
 
     async function updateSkill(skillId, categoryId, newSkill) {
-        var params = [{key: 'label', value: newSkill.label}, {key: 'value', value: newSkill.value}]
+        var params = [{ key: 'label', value: newSkill.label }, { key: 'value', value: newSkill.value }]
         await fetchWithReload(() => UpdateSkillFetch(skillId, params));
     }
 
@@ -168,67 +169,77 @@ const Skills = () => {
     }
 
     return (
-        <div className="w-100 h-100 skills-container" onClick={deselectCategoryAndSkill}>
-            <h3>Skills</h3>
+        <div className="w-100 h-100 skills-container d-flex flex-column" onClick={deselectCategoryAndSkill}>
+            <div className='d-flex justify-content-between align-items-center'>
+                <h3>Skills</h3>
+
+                <div className='row d-flex justify-content-end mt-2 mb-2'>
+                    <button
+                        className='btn btn-primary'
+                        style={{ width: 'fit-content' }}
+                        onClick={() => setShowFolderModal(true)}
+                    >
+                        Create Skill Category
+                    </button>
+                </div>
+            </div>
             <hr />
 
-            <div className='row d-flex justify-content-end mt-2 mb-2'>
-                <button
-                    className='btn btn-primary'
-                    style={{ width: 'fit-content' }}
-                    onClick={() => setShowFolderModal(true)}
-                >
-                    Create Skill Category
-                </button>
-            </div>
-
-            <div className='row gy-5'>
-                {categories?.map((category, index) => {
-                    return (
-                        <div key={index} className='col-md-4'>
-                            <div className={"card card-box-shadow p-2" + (category.isSelected == true ? ' selected-card' : '')} onClick={(e) => selectCategory(e, category.id)}>
-                                <div className="card-body">
-                                    <div className="d-flex justify-content-between mb-3">
-                                        <div></div>
-                                        <h5 className="card-title text-center">{category.name}</h5>
-                                        <div className="d-flex">
-                                            <HiTrash onClick={(e) => deleteCategory(e, category.id)} size={20} className='ms-1 header-home' />
-                                        </div>
-                                    </div>
-                                    {category?.skills?.map((skill, index) => {
-                                        return (
-                                            <div key={index} className='text-align-center mb-2' onClick={(e) => e.stopPropagation()}>
-                                                {skill.id && !skill.isEditing ?
-                                                    <div>
-                                                        <div className="d-flex">
-                                                            <h5 style={{ flexGrow: 1 }}>{skill.label}</h5>
-                                                            <HiPencil onClick={(e) => editSkill(e, category.id, skill.id)} size={20} className='ms-2 header-home' />
-                                                            <HiTrash onClick={(e) => deleteSkill(e, skill.id)} size={20} className='ms-1 header-home' />
-                                                        </div>
-                                                    </div>
-                                                    :
-                                                    <div style={{ flexGrow: 1 }}>
-                                                        <Select
-                                                            components={{ MenuList }}
-                                                            options={skills}
-                                                            onChange={(option) => selectSkillOption(skill.id, category.id, option)}
-                                                            autoFocus={category.isSelected}
-                                                            value={skills.find(skillOption => skillOption.value === skill.value)}
-                                                        />
-                                                    </div>
-                                                }
+            {categories?.length > 0 ?
+                <div className='row gy-5'>
+                    {categories?.map((category, index) => {
+                        var skillsLength = category.skills.length;
+                        return (
+                            <div key={index} className={skillsLength > 10 ? 'col-md-8' : 'col-md-4'}>
+                                <div className={"card card-box-shadow p-2" + (category.isSelected == true ? ' selected-card' : '')} onClick={(e) => selectCategory(e, category.id)}>
+                                    <div className="card-body">
+                                        <div className="d-flex justify-content-between mb-3">
+                                            <div></div>
+                                            <h5 className="card-title text-center">{category.name}</h5>
+                                            <div className="d-flex">
+                                                <HiTrash onClick={(e) => deleteCategory(e, category.id)} size={20} className='ms-1 header-home' />
                                             </div>
-                                        );
-                                    })}
-                                    {!category.isSelected &&
-                                        <div className='text-secondary'>Click to add</div>
-                                    }
+                                        </div>
+                                        {category?.skills?.map((skill, index) => {
+                                            return (
+                                                <div key={index} className='text-align-center mb-2' onClick={(e) => e.stopPropagation()}>
+                                                    {skill.id && !skill.isEditing ?
+                                                        <div>
+                                                            <div className="d-flex">
+                                                                <h5 style={{ flexGrow: 1 }}>{skill.label}</h5>
+                                                                <HiPencil onClick={(e) => editSkill(e, category.id, skill.id)} size={20} className='ms-2 header-home' />
+                                                                <HiTrash onClick={(e) => deleteSkill(e, skill.id)} size={20} className='ms-1 header-home' />
+                                                            </div>
+                                                        </div>
+                                                        :
+                                                        <div style={{ flexGrow: 1 }}>
+                                                            <Select
+                                                                components={{ MenuList }}
+                                                                options={skills}
+                                                                onChange={(option) => selectSkillOption(skill.id, category.id, option)}
+                                                                autoFocus={category.isSelected}
+                                                                value={skills.find(skillOption => skillOption.value === skill.value)}
+                                                            />
+                                                        </div>
+                                                    }
+                                                </div>
+                                            );
+                                        })}
+                                        {!category.isSelected &&
+                                            <div className='text-secondary'>Click to add</div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    );
-                })}
-            </div>
+                        );
+                    })}
+                </div>
+                :
+                <div className='w-100 d-flex flex-column justify-content-center align-items-center' style={{ flexGrow: 1 }}>
+                    <BiWrench size={200} color={'lightgray'} />
+                    <p className='h3' style={{ color: 'lightgray' }}>No Skills yet</p>
+                </div>
+            }
 
             <FolderModal
                 show={showFolderModal}

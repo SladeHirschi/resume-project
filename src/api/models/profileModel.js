@@ -104,34 +104,74 @@ exports.deleteWorkData = async (id) => {
     return true
 }
 
-exports.upload = async (file, userId) => {
-    const result = await query(`SELECT * FROM profile_pictures WHERE user_id = ? AND is_deleted = 0`, [userId]);
-    if (result[0] && result[0].is_deleted == false) {
-        await query(`UPDATE profile_pictures SET is_deleted = 1 WHERE id = ?`, [result[0].id]);
-    }
+exports.upload = async (file, userId, table) => {
+    // refactor all of this and test it
     let params = {
         Bucket: "slade-hirschi-resume-bucket",
         Key: file.filename,
         Body: fs.readFileSync(file.path)
     };
-    try {
-        let uploadPromise = await new AWS.S3().putObject(params).promise();
-        let publicUrl = `https://${params.Bucket}.s3.us-west-2.amazonaws.com/${params.Key}`;
-        console.log("Successfully uploaded data to bucket");
-        try {
-            await query(`INSERT INTO profile_pictures (public_url, user_id, is_deleted) VALUES (?, ?, 0)`, [publicUrl, userId]);
-            return `https://${params.Bucket}.s3.us-west-2.amazonaws.com/${params.Key}`;
-        } catch (e) {
-            console.log("e: ", e)
-            return '';
-        }
-    } catch (e) {
-        console.log("e: ", e)
-        return '';
+    if (table === "profile_pictures") {
+        var {insertedId, url, error} = await this.uploadProfilePicture(params, userId);
+    } else if (table === "projects") {
+        var {insertedId, url, error} = await this.uploadProjectPicture(params, userId);
+    } else {
+        var url = "";
+        var error = "table name did not match any table"
     }
+    return {insertedId, url, error}
 }
 
 exports.getProfilePicture = async (userId) => {
     const result = await query(`SELECT public_url FROM profile_pictures WHERE user_id = ? AND is_deleted = 0`, [userId]);
     return result[0] ? result[0].public_url : '';
+}
+
+exports.uploadProfilePicture = async (params, userId) => {
+    try {
+        let uploadPromise = await new AWS.S3().putObject(params).promise();
+        let publicUrl = `https://${params.Bucket}.s3.us-west-2.amazonaws.com/${params.Key}`;
+            const previousProfilePic = await this.getProfilePicture(userId);
+        if (previousProfilePic.length === 0 ){
+            const result = await query(`INSERT INTO profile_pictures (public_url, user_id, is_deleted) VALUES (?, ?, 0)`, [publicUrl, userId]);
+        } else {
+            await query(`UPDATE profile_pictures SET public_url = ? WHERE user_id = ?`, [publicUrl, userId]);
+        }
+        return {insertedId: result.insertId, url: publicUrl, error: null};
+    } catch (e) {
+        console.log("e: ", e)
+        return {url: "", error: e};
+    }
+}
+
+exports.uploadProjectPicture = async (params, userId) => {
+    try {
+        let uploadPromise = await new AWS.S3().putObject(params).promise();
+        let publicUrl = `https://${params.Bucket}.s3.us-west-2.amazonaws.com/${params.Key}`;
+        const result = await query(`INSERT INTO projects (public_url, user_id, is_deleted) VALUES (?, ?, 0)`, [publicUrl, userId]);
+        return {insertedId: result.insertId, url: publicUrl, error: null};
+    } catch (e) {
+        console.log("e: ", e)
+        return {url: "", error: e};
+    }
+}
+
+exports.getProjects = async (userId) => {
+    var result = await query(`SELECT id, public_url AS image, hyperlink AS link, title AS name, description FROM projects WHERE user_id = ? AND is_deleted = 0`, [userId]);
+    return result;
+}
+
+exports.createProject = async (userId, title, description, link, publicURL) => {
+    var result = await query(`INSERT INTO projects (title, description, hyperlink, public_url, user_id) VALUES (?, ?, ?, ?, ?)`, [title, description, link, publicURL, userId]);
+    return result;
+}
+
+exports.updateProject = async (id, title, description, link, publicURL) => {
+    var result = await query(`UPDATE projects SET title = ?, description = ?, hyperlink = ?, public_url = ? WHERE id = ?`, [title, description, link, publicURL, id]);
+    return result;
+}
+
+exports.deleteProject = async (id) => {
+    var result = await query(`UPDATE projects SET is_deleted = 1 WHERE id = ?`, [id]);
+    return;
 }
